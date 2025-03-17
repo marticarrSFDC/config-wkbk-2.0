@@ -73,8 +73,7 @@ jobs:
           THRESHOLD=100
           ACTUAL=$(jq '.total.lines.pct' coverage-summary.json)
           if (( $(echo "$ACTUAL < $THRESHOLD" | bc -l) )); then
-            echo "Code coverage $ACTUAL% is below threshold $THRESHOLD%"
-            echo "Coverage report: $(cat coverage-summary.json)"  
+            echo "Code coverage $ACTUAL% is below threshold $THRESHOLD%" 
             exit 1
           fi
 
