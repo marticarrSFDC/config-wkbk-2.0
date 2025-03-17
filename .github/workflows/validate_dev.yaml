@@ -69,11 +69,12 @@ jobs:
 
       - name: Enforce Coverage Threshold
         run: |
-          COVERAGE=$(npx jest --coverage --json --outputFile=coverage-summary.json)
+          COVERAGE=$(npx jest --coverage --json)
           THRESHOLD=100
           ACTUAL=$(jq '.total.lines.pct' coverage-summary.json)
           if (( $(echo "$ACTUAL < $THRESHOLD" | bc -l) )); then
             echo "Code coverage $ACTUAL% is below threshold $THRESHOLD%"
+            echo "Coverage report: $COVERAGE"
             exit 1
           fi
 
