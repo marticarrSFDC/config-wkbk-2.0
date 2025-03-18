@@ -79,6 +79,11 @@ jobs:
           echo "Listing all files and directories..."
           ls -R .
 
+      - name: Debug Coverage Final JSON
+        run: |
+          echo "Contents of coverage-final.json:"
+          cat coverage/coverage-final.json
+
       - name: Fail if coverage is below 100%
         run: |
           if [ ! -f $(find . -name "coverage-summary.json") ]; then
