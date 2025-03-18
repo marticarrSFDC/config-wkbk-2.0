@@ -87,7 +87,7 @@ jobs:
             ls -R .
             exit 1
           fi
-          COVERAGE=$(node -pe "require('./coverage/coverage-final.json').total.statements.pct")
+          COVERAGE=$(node -pe "require('./coverage/coverage-summary.json').total.statements.pct")
           if (( $(echo "$COVERAGE < 100" | bc -l) )); then
             echo "Coverage is below 100%! Current coverage: $COVERAGE%"
             exit 1
