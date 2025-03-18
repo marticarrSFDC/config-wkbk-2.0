@@ -69,11 +69,18 @@ jobs:
 
       - name: Fail if coverage is below 100%
         run: |
-          COVERAGE=$(node -pe "require('./coverage/coverage-summary.json').total.statements.pct")
+          COVERAGE=$(node -pe "require('coverage-summary.json').total.statements.pct")
           if (( $(echo "$COVERAGE < 100" | bc -l) )); then
             echo "Coverage is below 100%! Current coverage: $COVERAGE%"
             exit 1
           fi
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/lcov-report/
+          retention-days: 5
 
   lwc-mutation-coverage:
     runs-on: ubuntu-latest
