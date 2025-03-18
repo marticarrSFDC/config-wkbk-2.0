@@ -24,7 +24,6 @@
     "@salesforce/eslint-plugin-lightning": "^1.0.0",
     "@salesforce/sfdx-lwc-jest": "^7.0.1",
     "@stryker-mutator/core": "^8.7.1",
-    "@stryker-mutator/javascript-mutator": "^4.0.0",
     "@stryker-mutator/mocha-runner": "^8.7.1",
     "eslint": "8.57.1",
     "eslint-plugin-import": "^2.25.4",
@@ -41,9 +40,5 @@
     "**/{aura,lwc}/**/*.js": [
       "eslint"
     ]
-  },
-  "dependencies": {
-    "bc": "^0.1.1",
-    "jq": "^1.7.2"
   }
 }

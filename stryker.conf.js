@@ -1,8 +1,12 @@
 module.exports = {
-	mutate: ['src/**/*.js'], // Adjust this path to match your source files
+	mutate: ['force-app/main/default/lwc/**/*.js',
+	'!force-app/main/default/lwc/**/__tests__/*.*',
+	'!force-app/main/default/lwc/**/__tests__/**/*.*',
+	], // Adjust this path to match your source files
 	testRunner: 'mocha',
 	mochaOptions: {
-	  spec: ['test/**/*.spec.js'], // Adjust this path to match your test files
+	  spec: ['force-app/main/default/lwc/**/__tests__/*.*',
+	'force-app/main/default/lwc/**/__tests__/**/*.*'], // Adjust this path to match your test files
 	},
 	reporters: ['clear-text', 'progress', 'html'],
 	coverageAnalysis: 'off', // Set to "perTest" if you want Stryker to optimize mutations
