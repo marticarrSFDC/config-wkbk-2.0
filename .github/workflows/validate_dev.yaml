@@ -67,6 +67,13 @@ jobs:
       - name: Run Jest Tests with Coverage
         run: npm run test:unit -- --coverage --coverageReporters=text
 
+      - name: Debug Coverage Directory
+        run: |
+          echo "Checking coverage directory contents..."
+          ls -R coverage || echo "❌ Coverage directory not found!"
+          echo "Checking root directory contents..."
+          ls -R .
+
       - name: Fail if coverage is below 100%
         run: |
           COVERAGE=$(node -pe "require('./coverage/coverage-summary.json').total.statements.pct")
