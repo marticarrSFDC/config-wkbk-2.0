@@ -4,10 +4,11 @@ module.exports = {
 	'!force-app/main/default/lwc/**/__tests__/**/*.*',
 	], // Adjust this path to match your source files
 	testRunner: 'mocha',
+	testRunnerNodeArgs: ["--require", "esm"],
 	mochaOptions: {
 	  	spec: ['force-app/main/default/lwc/**/__tests__/*.*',
 	'force-app/main/default/lwc/**/__tests__/**/*.*'], // Adjust this path to match your test files
-		require: ['esm'] // Enables support for ES modules
+		require: ["ts-node/register"]
 	},
 	reporters: ['clear-text', 'progress', 'html'],
 	coverageAnalysis: 'off', // Set to "perTest" if you want Stryker to optimize mutations
