@@ -65,15 +65,13 @@ jobs:
         run: npm install
 
       - name: Run Jest Tests with Coverage
-        run: npm run test:unit -- --coverage
+        run: npm run test:unit -- --coverage --coverageReporters=text
 
-      - name: Enforce Coverage Threshold
+      - name: Fail if coverage is below 100%
         run: |
-          COVERAGE=$(npx jest --coverage --json --outputFile=coverage-summary.json)
-          THRESHOLD=100
-          ACTUAL=$(jq '.total.lines.pct' coverage-summary.json)
-          if (( $(echo "$ACTUAL < $THRESHOLD" | bc -l) )); then
-            echo "Code coverage $ACTUAL% is below threshold $THRESHOLD%"
+          COVERAGE=$(node -pe "require('./coverage/coverage-summary.json').total.statements.pct")
+          if (( $(echo "$COVERAGE < 100" | bc -l) )); then
+            echo "Coverage is below 100%! Current coverage: $COVERAGE%"
             exit 1
           fi
 

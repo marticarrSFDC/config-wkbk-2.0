@@ -2,5 +2,17 @@ const { jestConfig } = require('@salesforce/sfdx-lwc-jest/config');
 
 module.exports = {
     ...jestConfig,
-    modulePathIgnorePatterns: ['<rootDir>/.localdevserver']
+    modulePathIgnorePatterns: ['<rootDir>/.localdevserver'],
+    preset: '@lwc/jest-preset',
+    moduleFileExtensions: ['js', 'html'],
+    coverageThreshold: {
+        global: {
+        branches: 100,
+        functions: 100,
+        lines: 100,
+        statements: 100,
+        },
+    },
+    collectCoverage: true,
+    coverageReporters: ['text', 'lcov'],
 };
