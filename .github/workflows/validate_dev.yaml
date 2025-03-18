@@ -86,31 +86,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: npm
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run Jest Tests with Coverage
-        run: npm run test:unit -- --coverage
+      - name: Run Jest tests with 100% coverage enforcement
+        run: npm run test:unit -- --coverage --coverageDirectory=coverage
 
-      - name: Run Mocha Mutation Tests
-        run: npx stryker run
+      - name: Run Stryker mutation tests
+        run: npm run test:mutation
 
-      - name: Check Mutation Score
+      - name: Enforce Mutation Score
         run: |
-          SCORE=$(jq '.mutationScore' reports/mutation/mutation.json)
-          THRESHOLD=70
-          if (( $(echo "$SCORE < $THRESHOLD" | bc -l) )); then
-            echo "Mutation testing score $SCORE% is below threshold $THRESHOLD%"
+          if [ ! -f reports/mutation/mutation.json ]; then
+            echo "❌ mutation.json not found! Stryker may not have run properly."
             exit 1
           fi
+
+          MUTATION_SCORE=$(node -pe "require('./reports/mutation/mutation.json').mutationScore")
+
+          echo "✅ Mutation Score: $MUTATION_SCORE%"
+
+          if (( $(echo "$MUTATION_SCORE < 80" | bc -l) )); then
+            echo "❌ Mutation score is below 80%! Current score: $MUTATION_SCORE%"
+            exit 1
+          fi
+
+      - name: Upload Stryker mutation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: stryker-mutation-report
+          path: reports/mutation/html/
+          retention-days: 7
 
   validate-deployment:
     runs-on: ubuntu-latest
