@@ -1,4 +1,4 @@
-const { jestConfig } = require('@salesforce/sfdx-lwc-jest/config');
+import { jestConfig } from '@salesforce/sfdx-lwc-jest/config';
 
 module.exports = {
     ...jestConfig,
