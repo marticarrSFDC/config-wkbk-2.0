@@ -1,10 +1,19 @@
+/**
+* @description Wrapper classes for Tooling API objects
+*/
 public with sharing class CW_ToolingApiObjects {
-    public class DescribeGlobalResult {
+    /**
+	* @description Wrapper class for Tooling API DescribeGlobalResult
+	*/
+	public class DescribeGlobalResult {
         public String encoding;
         public Integer maxBatchSize;
         public DescribeGlobalSObjectResult[] sobjects;
     }
 
+	/**
+	* @description Wrapper class for Tooling API DescribeGlobalSObjectResult
+	*/
 	public class DescribeGlobalSObjectResult {
 		public Boolean activateable;
 		public Boolean createable;

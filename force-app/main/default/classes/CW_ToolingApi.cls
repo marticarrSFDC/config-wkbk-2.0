@@ -1,3 +1,6 @@
+/**
+* @description Wrapper class for the Tooling API
+*/
 public with sharing class CW_ToolingApi {
 	/**
 	 * Copyright (c) 2013, Apex Tooling API
@@ -27,6 +30,9 @@ public with sharing class CW_ToolingApi {
 
 	@TestVisible private String sessionId;
 
+	/**
+	 * @description Uses the current user's Session Id
+	 **/
 	public CW_ToolingApi() {
 		this.sessionId = UserInfo.getSessionId();
 		if(this.sessionId == null) {
@@ -35,16 +41,15 @@ public with sharing class CW_ToolingApi {
 	}
 
 	/**
-	 * Uses the given Session Id, useful when using the API in a batch context
+	 * @description Uses the given Session Id, useful when using the API in a batch context
 	 **/
 	public CW_ToolingApi(String sessionId) {
 		this.sessionId = sessionId;
 	}
 
 	/**
-     * Describes all the sobjects via the tooling api.  This is the equivalent of
-     * calling //instance/api/tooling/sobjects via the Tooling REST API.
-     * @return a ToolingAPI DescribeGlobalResult
+     * @description Describes all the sobjects via the tooling api.  This is the equivalent of calling //instance/api/tooling/sobjects via the Tooling REST API.
+     * @return CW_ToolingApiObjects DescribeGlobalResult
      * @throws ToolingAPIException if an an exception was encountered.
      */
     public CW_ToolingApiObjects.DescribeGlobalResult describeGlobal() {
@@ -52,27 +57,24 @@ public with sharing class CW_ToolingApi {
     }
 
 	/*
-	 * Static helper method for the "happy path" of JSON deserialization.
-	 * This method should be used for the public methods when the generic JSON deserialize method
-	 * may be used. Sends a HTTP GET request.
+	 * @description Static helper method for the "happy path" of JSON deserialization. Sends a HTTP GET request.
+	 * @return CW_ToolingApiObjects DescribeGlobalResult
 	 */
 	private Object submitRestCallAndDeserialize(String relativeUrl, Type classType){
 		return submitRestCallAndDeserialize(relativeUrl, classType, 'GET');
 	}
 
 	/*
-	 * Static helper method for the "happy path" of JSON deserialization.
-	 * This method should be used for the public methods when the generic JSON deserialize method
-	 * may be used. Sends a HTTP requested based on method parameter.
+	 * @description Static helper method for the "happy path" of JSON deserialization. Sends a HTTP requested based on method parameter.
+	 * @return CW_ToolingApiObjects DescribeGlobalResult
 	 */
 	private Object submitRestCallAndDeserialize(String relativeUrl, Type classType, String method){
 		return submitRestCallAndDeserialize(relativeUrl, classType, method, null);
 	}		
 
 	/*
-	 * Static helper method for the "happy path" of JSON deserialization.
-	 * This method should be used for the public methods when the generic JSON deserialize method
-	 * may be used. Sends a HTTP requested based on method parameter and data.
+	 * @description Static helper method for the "happy path" of JSON deserialization. Sends a HTTP requested based on method parameter and data.
+	 * @return CW_ToolingApiObjects DescribeGlobalResult
 	 */
 	private Object submitRestCallAndDeserialize(String relativeUrl, Type classType, String method, Object data) {
 		HttpResponse response = CW_ToolingApiRest.submitRestCall(relativeUrl, method, data);

@@ -1,6 +1,10 @@
+/**
+* @description Wrapper class for Tooling API REST requests
+*/
 public with sharing class CW_ToolingApiRest {
     public static final String TOOLING_API_URI = '/services/data/v62.0/tooling';
-    /**
+    
+	/**
 	 * Submits the REST HTTP GET request.
 	 * @throws ToolingAPIAuthorizationException if the remote site is not authorized.
 	*/
@@ -9,24 +13,31 @@ public with sharing class CW_ToolingApiRest {
 	}
 
 	/**
-	 * Submits the REST request using the given method.
-	 * @throws ToolingAPIAuthorizationException if the remote site is not authorized.
-	 */
+     * @description Submits the REST request using the given method.
+     * @return HttpResponse
+     * @throws ToolingAPIAuthorizationException if the remote site is not authorized.
+     */
 	public static HttpResponse submitRestCall(String relativeUrl, String method){
 		return submitRestCall(relativeUrl, method, null);
 	}
 
 	/**
-	 * Submits the REST request using the given method and data.
+	 * @description Submits the REST request using the given method and data.
+     * @return HttpResponse
 	 * @throws ToolingAPIAuthorizationException if the remote site is not authorized.
 	 */
 	public static HttpResponse submitRestCall(String relativeUrl, String method, Object data){
-		Http h = new Http();
 		HttpRequest queryReq = new HttpRequest();
 		queryReq.setEndpoint('callout:Salesforce_Tooling_API' + TOOLING_API_URI + relativeUrl);
 		queryReq.setMethod('GET');
 		queryReq.setHeader('Content-Type', 'application/json');
 		queryReq.setTimeout(120000);
+		queryReq = handleSerialize(queryReq, data);
+
+		return handleSend(method, queryReq);
+	}
+
+	private static HttpRequest handleSerialize(HttpRequest queryReq, Object data) {
 		if(data != null) {
 			if(data instanceof ISerialize) {
 				ISerialize dataToserialize = (ISerialize) data;
@@ -41,8 +52,12 @@ public with sharing class CW_ToolingApiRest {
 				queryReq.setBody(JSON.serialize(data));
 			}
 		}
+		return queryReq;
+	}
 
+	private static HttpResponse handleSend(String method, HttpRequest queryReq) {
 		HttpResponse queryRes = null;
+		Http h = new Http();
 		try {
 			queryRes = h.send(queryReq);
 		} catch(System.CalloutException ce) {
@@ -52,39 +67,52 @@ public with sharing class CW_ToolingApiRest {
 				throw ce;
 			}
 		}
+		return handleResponseStatus(method, queryRes);
+	}
 
+	private static HttpResponse handleResponseStatus(String method, HttpResponse queryRes) {
+		if(queryRes.getStatusCode() != getSuccessCode(method)) {
+			if(queryRes.getBody().length() > 0) {
+				throw new ToolingAPIException((List<ErrorResponse>)JSON.deserialize(queryRes.getBody(), List<ErrorResponse>.class));
+			} else {
+				throw new ToolingAPIException('Unexpected HTTP Status ' + queryRes.getStatusCode());
+			}
+		}
+		return queryRes;
+	}
+
+	private static Integer getSuccessCode(String method) {
 		Integer successCode = 200;
 		if(method.equals('POST')) {
 			successCode = 201;
 		} else if(method.equals('DELETE')) {
 			successCode = 204;
 		}
-		if(queryRes.getStatusCode() != successCode) {
-			if(queryRes.getBody().length() > 0) {
-				throw new ToolingAPIException((List<ErrorResponse>)JSON.deserialize(queryRes.getBody(), List<ErrorResponse>.class));
-			} else {
-				throw new ToolingAPIException('Unexpected HTTP Status ' + queryRes.getStatusCode());
-			}
-		}  
-		return queryRes;
+		return successCode;
 	}
 
-    /**
-	 * Interface used to implement custom serialization on SObject based types
-	 */
     private interface ISerialize {
         void serialize(JSONGenerator generator);
     }
 
+	/**
+	* @description Exception class for Tooling API REST requests
+	*/
 	public class ToolingAPIException extends Exception {
 		public ToolingAPIException(List<ErrorResponse> errorResponses){
 			this(errorResponses[0].errorCode + ' : ' + errorResponses[0].message);
 		}
 	}
 
+	/**
+	* @description Exception class for Tooling API REST requests
+	*/
 	public class ToolingAPIAuthorizationException extends Exception {}
 
-    public class ErrorResponse{
+    /**
+	* @description Wrapper class for Tooling API errors
+	*/
+	public class ErrorResponse{
         public List<String> fields;
         public String errorCode;
         public String message;

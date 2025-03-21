@@ -1,7 +1,7 @@
 @IsTest
 public class CW_ToolingApiTest {
     @IsTest
-    static void constructor_setUserSessionId() {
+    static void constructorSetUserSessionId() {
         // ACT
         Test.startTest();
         CW_ToolingApi toolingApi = new CW_ToolingApi();
@@ -12,7 +12,7 @@ public class CW_ToolingApiTest {
 	}
 
 	@IsTest
-    static void constructor_givenSessionId_setSame() {
+    static void constructorGivenSessionIdSetsSame() {
         // ACT
         Test.startTest();
         CW_ToolingApi toolingApi = new CW_ToolingApi('SESSION_ID');
@@ -23,7 +23,7 @@ public class CW_ToolingApiTest {
     }
 
     @IsTest
-    static void describeGlobal_givenSuccessfulCallout_returnDescribeGlobalResult() {
+    static void describeGlobalGivenSuccessfulCalloutReturnsDescribeGlobalResult() {
         // ARRANGE
         Test.setMock(HttpCalloutMock.class, new ToolingApiMock());
         CW_ToolingApi toolingApi = new CW_ToolingApi();
@@ -38,7 +38,7 @@ public class CW_ToolingApiTest {
     }
 
     @IsTest
-    static void describeGlobal_givenUnsuccessfulCallout_throwException() {
+    static void describeGlobalGivenUnsuccessfulCalloutThrowsException() {
         // ARRANGE
         Test.setMock(HttpCalloutMock.class, new ToolingApiMockError());
         CW_ToolingApi toolingApi = new CW_ToolingApi();
