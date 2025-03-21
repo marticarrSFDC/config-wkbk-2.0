@@ -6,7 +6,7 @@ module.exports = {
 	testRunnerNodeArgs: ["--loader", "esm"],
 	mochaOptions: {
 	  	spec: ['force-app/main/default/lwc/**/__tests__/*.test.js'], // Adjust this path to match your test files
-		timeout: 10000
+		require: []
 	},
 	reporters: ['clear-text', 'progress', 'html'],
 	coverageAnalysis: 'perTest', // Set to "perTest" if you want Stryker to optimize mutations

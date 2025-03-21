@@ -1238,14 +1238,6 @@ rules:
         - Recommended
         - CodeStyle
         - Apex
-    "MethodNamingConventions":
-      severity: 3
-      tags:
-        - Recommended
-        - CodeStyle
-        - Apex
-      paths-ignore:
-        - "**/*Test.cls"
     "MethodWithSameNameAsEnclosingClass":
       severity: 3
       tags:

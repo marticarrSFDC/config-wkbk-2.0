@@ -1,4 +1,5 @@
 import { createElement } from "lwc";
+import { createApexTestWireAdapter } from "@salesforce/sfdx-lwc-jest";
 import Cw_main from "c/cw_main";
 
 import getMetadataCallout from "@salesforce/apex/CW_ToolingApiService.getMetadataCallout";
@@ -6,7 +7,6 @@ import getMetadataCallout from "@salesforce/apex/CW_ToolingApiService.getMetadat
 jest.mock(
   "@salesforce/apex/CW_ToolingApiService.getMetadataCallout", 
   () => {
-    const { createApexTestWireAdapter } = require("@salesforce/sfdx-lwc-jest");
       return {
           default: createApexTestWireAdapter(jest.fn())
       };
