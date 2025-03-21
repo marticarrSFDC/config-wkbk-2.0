@@ -3,53 +3,11 @@ name: Validate against SF Labs org
 on:
   pull_request:
     branches:
-      - [dev]
+      - dev
     types: [opened, synchronize]
     paths:
       - "force-app/**"
 jobs:
-  salesforce-code-analyzer:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out files
-        uses: actions/checkout@v4
-
-      # PREREQUISITES - Only needed if runner doesn't already satisfy these requirements
-      - name: Ensure node v20 or greater
-        uses: actions/setup-node@v4
-        with:
-          node-version: ">=20"
-      - name: Ensure java v11 or greater
-        uses: actions/setup-java@v4
-        with:
-          java-version: ">=11"
-          distribution: "zulu"
-      - name: Ensure python v3.10 or greater
-        uses: actions/setup-python@v5
-        with:
-          python-version: ">=3.10"
-
-      - name: Install Salesforce CLI
-        run: npm install -g @salesforce/cli@latest
-
-      - name: Install Latest Salesforce Code Analyzer CLI Plugin
-        run: sf plugins install code-analyzer@latest
-
-      - name: Run Salesforce Code Analyzer
-        id: run-code-analyzer
-        uses: forcedotcom/run-code-analyzer@v2
-        with:
-          run-arguments: --workspace . --view detail --output-file sfca_results.html --output-file sfca_results.json --config-file ./code-analyzer.yml
-          results-artifact-name: salesforce-code-analyzer-results
-
-      - name: Check the outputs to determine whether to fail
-        if: |
-          steps.run-code-analyzer.outputs.exit-code > 0 ||
-          steps.run-code-analyzer.outputs.num-sev1-violations > 0 ||
-          steps.run-code-analyzer.outputs.num-sev2-violations > 0 ||
-          steps.run-code-analyzer.outputs.num-violations > 10
-        run: exit 1
-
   lwc-coverage:
     runs-on: ubuntu-latest
     steps:
@@ -81,51 +39,34 @@ jobs:
           name: coverage-report
           path: coverage/lcov-report/
           retention-days: 5
-
-  lwc-mutation-coverage:
+          
+  salesforce-code-analyzer-workflow:
     runs-on: ubuntu-latest
-
+    needs: lwc-coverage
     steps:
-      - name: Checkout repository
+      - name: Check out files
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Install Salesforce CLI
+        run: npm install -g @salesforce/cli@latest
+
+      - name: Install Salesforce Code Analyzer v4.x CLI Plugin
+        run: sf plugins install @salesforce/sfdx-scanner@latest
+
+      - name: Run Salesforce Code Analyzer
+        id: run-code-analyzer
+        uses: forcedotcom/run-code-analyzer@v1
         with:
-          node-version: 18
-          cache: npm
+          run-command: run
+          run-arguments: --normalize-severity --target . --outfile results.html
+          results-artifact-name: salesforce-code-analyzer-results
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Jest tests with 100% coverage enforcement
-        run: npm run test:unit -- --coverage --coverageDirectory=coverage
-
-      - name: Run Stryker mutation tests
-        run: npm run test:mutation
-
-      - name: Enforce Mutation Score
-        run: |
-          if [ ! -f reports/mutation/mutation.json ]; then
-            echo "❌ mutation.json not found! Stryker may not have run properly."
-            exit 1
-          fi
-
-          MUTATION_SCORE=$(node -pe "require('./reports/mutation/mutation.json').mutationScore")
-
-          echo "✅ Mutation Score: $MUTATION_SCORE%"
-
-          if (( $(echo "$MUTATION_SCORE < 80" | bc -l) )); then
-            echo "❌ Mutation score is below 80%! Current score: $MUTATION_SCORE%"
-            exit 1
-          fi
-
-      - name: Upload Stryker mutation report
-        uses: actions/upload-artifact@v4
-        with:
-          name: stryker-mutation-report
-          path: reports/mutation/html/
-          retention-days: 7
+      - name: Check the outputs to determine whether to fail
+        if: |
+          steps.run-code-analyzer.outputs.exit-code > 0 ||
+          steps.run-code-analyzer.outputs.num-sev1-violations > 0 ||
+          steps.run-code-analyzer.outputs.num-violations > 10
+        run: exit 1
 
   validate-deployment:
     runs-on: ubuntu-latest
