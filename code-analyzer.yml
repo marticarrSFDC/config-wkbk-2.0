@@ -1244,6 +1244,8 @@ rules:
         - Recommended
         - CodeStyle
         - Apex
+      paths-ignore:
+        - "**/*Test.cls"
     "MethodWithSameNameAsEnclosingClass":
       severity: 3
       tags:

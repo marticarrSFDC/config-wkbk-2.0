@@ -30,7 +30,7 @@ public class CW_ToolingApiTest {
 
         // ACT
         Test.startTest();
-        CW_ToolingApi.DescribeGlobalResult describeGlobalResult = toolingApi.describeGlobal();
+        CW_ToolingApiObjects.DescribeGlobalResult describeGlobalResult = toolingApi.describeGlobal();
         Test.stopTest();
 
         // ASSERT
@@ -46,10 +46,10 @@ public class CW_ToolingApiTest {
         // ACT
         try {
             Test.startTest();
-            CW_ToolingApi.DescribeGlobalResult describeGlobalResult = toolingApi.describeGlobal();
+            CW_ToolingApiObjects.DescribeGlobalResult describeGlobalResult = toolingApi.describeGlobal();
             Test.stopTest();
             System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
-        } catch (CW_ToolingApi.ToolingAPIException e) {
+        } catch (CW_ToolingApiRest.ToolingAPIException e) {
             // ASSERT
             System.assertEquals('ERROR_MESSAGE : Something went wrong', e.getMessage(), 'Exception message should match the error message in the mock response.');
         }
@@ -60,7 +60,7 @@ public class CW_ToolingApiTest {
             HttpResponse res = new HttpResponse();
             Map<String, Object> resBody = new Map<String, Object>();
             if((req.getEndpoint()).contains('/sobjects')) {
-                resBody.put('response_x', new CW_ToolingApi.DescribeGlobalResult());
+                resBody.put('response_x', new CW_ToolingApiObjects.DescribeGlobalResult());
 			}
             res.setStatusCode(200);
             res.setHeader('Content-Type', 'application/json');

@@ -16,3 +16,4 @@
 **/aura/**/*.app
 .sfdx
 jest.config.js
+stryker.conf.js

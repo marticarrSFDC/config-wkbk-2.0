@@ -15,4 +15,4 @@ module.exports = {
 		low: 90,  // Acceptable threshold
 		break: 80 // Fail if below this score
 	}
-  };  
+};  

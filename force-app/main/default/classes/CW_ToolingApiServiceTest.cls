@@ -12,13 +12,13 @@ private class CW_ToolingApiServiceTest {
 
     @IsTest
     static void getMetadataCalloutNegativeTest() {
-        CW_ToolingApi.ToolingAPIException ex;
+        CW_ToolingApiRest.ToolingAPIException ex;
         try {
             Test.startTest();
             Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMockNegative());
             String response = CW_ToolingApiService.getMetadataCallout();
             Test.stopTest();
-        } catch(CW_ToolingApi.ToolingAPIException receivedEx) {
+        } catch(CW_ToolingApiRest.ToolingAPIException receivedEx) {
             ex = receivedEx;
         }
         
