@@ -106,6 +106,10 @@ public with sharing class CW_ToolingApiRest {
 	* @description Exception class for Tooling API REST requests
 	*/
 	public class ToolingAPIException extends Exception {
+		/**
+		* @description Constructor override
+		* @param errorResponses The error responses from the Tooling API
+		*/
 		public ToolingAPIException(List<ErrorResponse> errorResponses){
 			this(errorResponses[0].errorCode + ' : ' + errorResponses[0].message);
 		}

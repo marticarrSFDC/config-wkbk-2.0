@@ -16,8 +16,9 @@ private class CW_ToolingApiServiceTest {
         try {
             Test.startTest();
             Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMockNegative());
-            String response = CW_ToolingApiService.getMetadataCallout();
+            CW_ToolingApiService.getMetadataCallout();
             Test.stopTest();
+            System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
         } catch(CW_ToolingApiRest.ToolingAPIException receivedEx) {
             ex = receivedEx;
         }
@@ -25,6 +26,9 @@ private class CW_ToolingApiServiceTest {
         System.Assert.isTrue(ex != null, 'A CW_ToolingApi.ToolingAPIException should have been thrown');
     }
 
+    /**
+     * @description Mock class for the Tooling API service
+     */
     private class CW_ToolingApiServiceMock implements HttpCalloutMock {
         public HttpResponse respond(HttpRequest request) {
             HttpResponse response = new HttpResponse();
@@ -35,6 +39,9 @@ private class CW_ToolingApiServiceTest {
         }
     }
 
+    /**
+     * @description Mock class for the Tooling API service
+     */
     private class CW_ToolingApiServiceMockNegative implements HttpCalloutMock {
         public HttpResponse respond(HttpRequest request) {
             HttpResponse response = new HttpResponse();

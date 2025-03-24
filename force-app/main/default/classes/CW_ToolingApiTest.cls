@@ -46,7 +46,7 @@ public class CW_ToolingApiTest {
         // ACT
         try {
             Test.startTest();
-            CW_ToolingApiObjects.DescribeGlobalResult describeGlobalResult = toolingApi.describeGlobal();
+            toolingApi.describeGlobal();
             Test.stopTest();
             System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
         } catch (CW_ToolingApiRest.ToolingAPIException e) {
@@ -55,6 +55,9 @@ public class CW_ToolingApiTest {
         }
     }
 
+    /**
+     * @description Mock class for the Tooling API service
+     */
     private class ToolingApiMock implements HttpCalloutMock {
         public HTTPResponse respond(HTTPRequest req) {
             HttpResponse res = new HttpResponse();
@@ -69,6 +72,9 @@ public class CW_ToolingApiTest {
         }
     }
 
+    /**
+     * @description Mock class for the Tooling API service
+     */
     private class ToolingApiMockError implements HttpCalloutMock {
         public HTTPResponse respond(HTTPRequest req) {
             // Create a dummy error response
