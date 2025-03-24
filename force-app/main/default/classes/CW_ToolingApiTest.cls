@@ -59,6 +59,11 @@ public class CW_ToolingApiTest {
      * @description Mock class for the Tooling API service
      */
     private class ToolingApiMock implements HttpCalloutMock {
+        /**
+         * @description Responds to the HTTP request
+         * @param req The HTTP request that is sent to the Tooling API
+         * @return HTTPResponse The HTTP response for the Tooling API request
+         */
         public HTTPResponse respond(HTTPRequest req) {
             HttpResponse res = new HttpResponse();
             Map<String, Object> resBody = new Map<String, Object>();
@@ -76,6 +81,11 @@ public class CW_ToolingApiTest {
      * @description Mock class for the Tooling API service
      */
     private class ToolingApiMockError implements HttpCalloutMock {
+        /**
+         * @description Responds to the HTTP request
+         * @param req The HTTP request that is sent to the Tooling API
+         * @return HTTPResponse The HTTP response for the Tooling API request
+         */
         public HTTPResponse respond(HTTPRequest req) {
             // Create a dummy error response
             HttpResponse res = new HttpResponse();

@@ -30,6 +30,11 @@ private class CW_ToolingApiServiceTest {
      * @description Mock class for the Tooling API service
      */
     private class CW_ToolingApiServiceMock implements HttpCalloutMock {
+        /**
+         * @description Responds to the HTTP request
+         * @param request The HTTP request that is sent to the Tooling API
+         * @return HTTPResponse The HTTP response for the Tooling API request
+         */
         public HttpResponse respond(HttpRequest request) {
             HttpResponse response = new HttpResponse();
             response.setHeader('Content-Type', 'application/json');
@@ -43,6 +48,11 @@ private class CW_ToolingApiServiceTest {
      * @description Mock class for the Tooling API service
      */
     private class CW_ToolingApiServiceMockNegative implements HttpCalloutMock {
+        /**
+         * @description Responds to the HTTP request
+         * @param request The HTTP request that is sent to the Tooling API
+         * @return HTTPResponse The HTTP response for the Tooling API request
+         */
         public HttpResponse respond(HttpRequest request) {
             HttpResponse response = new HttpResponse();
             response.setHeader('Content-Type', 'application/json');

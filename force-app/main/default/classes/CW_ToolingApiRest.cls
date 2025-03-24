@@ -98,7 +98,10 @@ public with sharing class CW_ToolingApiRest {
 		return successCode;
 	}
 
-    private interface ISerialize {
+    /**
+	 * @description Interface for serializing data to JSON
+	 */
+	private interface ISerialize {
         void serialize(JSONGenerator generator);
     }
 
