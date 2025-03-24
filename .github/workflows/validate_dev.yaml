@@ -39,7 +39,6 @@ jobs:
           name: coverage-report
           path: coverage/lcov-report/
           retention-days: 5
-          results-artifact-name: lwc-coverage-results
 
   salesforce-code-analyzer-workflow:
     runs-on: ubuntu-latest
