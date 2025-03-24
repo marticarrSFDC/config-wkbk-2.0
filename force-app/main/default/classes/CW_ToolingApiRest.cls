@@ -5,7 +5,9 @@ public with sharing class CW_ToolingApiRest {
     public static final String TOOLING_API_URI = '/services/data/v62.0/tooling';
     
 	/**
-	 * Submits the REST HTTP GET request.
+	 * @description Submits the REST HTTP GET request.
+	 * @param relativeUrl The relative URL to append to the Tooling API base URL
+	 * @return HttpResponse
 	 * @throws ToolingAPIAuthorizationException if the remote site is not authorized.
 	*/
 	public static HttpResponse submitRestCall(String relativeUrl) {
@@ -14,6 +16,8 @@ public with sharing class CW_ToolingApiRest {
 
 	/**
      * @description Submits the REST request using the given method.
+	 * @param relativeUrl The relative URL to append to the Tooling API base URL
+	 * @param method The HTTP method to use
      * @return HttpResponse
      * @throws ToolingAPIAuthorizationException if the remote site is not authorized.
      */
@@ -23,6 +27,9 @@ public with sharing class CW_ToolingApiRest {
 
 	/**
 	 * @description Submits the REST request using the given method and data.
+	 * @param relativeUrl The relative URL to append to the Tooling API base URL
+	 * @param method The HTTP method to use
+	 * @param data The data to send in the request body
      * @return HttpResponse
 	 * @throws ToolingAPIAuthorizationException if the remote site is not authorized.
 	 */

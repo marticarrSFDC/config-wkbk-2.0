@@ -42,6 +42,7 @@ public with sharing class CW_ToolingApi {
 
 	/**
 	 * @description Uses the given Session Id, useful when using the API in a batch context
+	 * @param sessionId The Session Id to use
 	 **/
 	public CW_ToolingApi(String sessionId) {
 		this.sessionId = sessionId;
