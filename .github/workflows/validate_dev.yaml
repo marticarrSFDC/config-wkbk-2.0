@@ -64,6 +64,54 @@ jobs:
           name: mutation-report
           path: reports/mutation
 
+  apex-mutation-tests:
+  runs-on: ubuntu-latest
+  needs: validate-deployment
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install jq and bc
+      run: sudo apt-get update && sudo apt-get install -y jq bc
+
+    - name: Install Apex Mutator
+      run: npm install -g @jcbeaudoin/apex-mutator
+
+    - name: Authenticate to Salesforce
+      run: echo ${{ secrets.CW_DEMO }} | sf org login sfdx-url -s -u
+
+    - name: Run Apex mutation tests
+      run: |
+        apex-mutator \
+          -s force-app/main/default/classes \
+          -t force-app/main/default/classes \
+          -u ${{ secrets.CW_DEMO_USERNAME }} \
+          -r reports/apex-mutation \
+          --run-tests
+
+    - name: Upload Apex mutation report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: apex-mutation-report
+        path: reports/apex-mutation
+
+    - name: Enforce Apex mutation threshold
+      run: |
+        score=$(jq '.mutationScore' reports/apex-mutation/result.json)
+        echo "Mutation score: $score"
+        threshold=70
+        if (( $(echo "$score < $threshold" | bc -l) )); then
+          echo "❌ Mutation score is below threshold ($threshold%)"
+          exit 1
+        else
+          echo "✅ Mutation score meets threshold"
+        fi
+
   salesforce-code-analyzer-workflow:
     runs-on: ubuntu-latest
     steps:
@@ -97,6 +145,7 @@ jobs:
       - salesforce-code-analyzer-workflow
       - lwc-coverage
       - mutation-tests
+      - apex-mutation-tests
     container:
       image: salesforce/cli:latest-slim
     steps:
