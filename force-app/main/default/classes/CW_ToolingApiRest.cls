@@ -102,6 +102,10 @@ public with sharing class CW_ToolingApiRest {
 	 * @description Interface for serializing data to JSON
 	 */
 	private interface ISerialize {
+		/**
+		 * @description Serializes data to JSON
+		 * @param generator The JSON generator to use
+		 */
         void serialize(JSONGenerator generator);
     }
 

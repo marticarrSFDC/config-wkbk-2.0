@@ -8,7 +8,6 @@ export default class Cw_main extends NavigationMixin(LightningElement) {
   handleClick() {
     getMetadataCallout()
       .then((result) => {
-        console.log('success');
         console.log(result);
         // const workbook = JSON.parse(result);
         // this[NavigationMixin.Navigate]({
