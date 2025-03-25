@@ -77,18 +77,19 @@ jobs:
       - name: Install jq and bc
         run: sudo apt-get update && sudo apt-get install -y jq bc
 
-      - name: Install Apex Mutator
-        run: npm install -g @jcbeaudoin/apex-mutator
+      - name: Download Apex Mutator
+        run: |
+          curl -L -o apex-mutator.jar https://github.com/jcbeaudoin/apex-mutator/releases/download/v0.5.2/apex-mutator-0.5.2.jar
 
       - name: Authenticate to Salesforce
         run: echo ${{ secrets.CW_DEMO }} | sf org login sfdx-url -s -u
 
       - name: Run Apex mutation tests
         run: |
-          apex-mutator \
+          java -jar apex-mutator.jar \
             -s force-app/main/default/classes \
             -t force-app/main/default/classes \
-            -u ${{ secrets.CW_DEMO_USERNAME }} \
+            -u dev-org \
             -r reports/apex-mutation \
             --run-tests
 
