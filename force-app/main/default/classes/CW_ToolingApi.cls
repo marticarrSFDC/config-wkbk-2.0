@@ -50,38 +50,47 @@ public with sharing class CW_ToolingApi {
 
 	/**
      * @description Describes all the sobjects via the tooling api.  This is the equivalent of calling //instance/api/tooling/sobjects via the Tooling REST API.
+     * @return String query result
+     * @throws ToolingAPIException if an an exception was encountered.
+     */
+    public String query(String query) {
+        return submitRestCallAndDeserialize(CW_Constants.TOOLING_API_URI + '/query?q=' + query);
+    }
+	
+	/**
+     * @description Describes all the sobjects via the tooling api.  This is the equivalent of calling //instance/api/tooling/sobjects via the Tooling REST API.
      * @return CW_ToolingApiObjects DescribeGlobalResult
      * @throws ToolingAPIException if an an exception was encountered.
      */
-    public CW_ToolingApiObjects.DescribeGlobalResult describeGlobal() {
-        return (CW_ToolingApiObjects.DescribeGlobalResult)submitRestCallAndDeserialize('/sobjects', CW_ToolingApiObjects.DescribeGlobalResult.class);
+    public String retrieveSObjects() {
+        return submitRestCallAndDeserialize(CW_Constants.API_URI + '/sobjects');
     }
 
 	/*
 	 * @description Static helper method for the "happy path" of JSON deserialization. Sends a HTTP GET request.
 	 * @return CW_ToolingApiObjects DescribeGlobalResult
 	 */
-	private Object submitRestCallAndDeserialize(String relativeUrl, Type classType){
-		return submitRestCallAndDeserialize(relativeUrl, classType, 'GET');
+	private String submitRestCallAndDeserialize(String relativeUrl){
+		return submitRestCallAndDeserialize(relativeUrl, 'GET');
 	}
 
 	/*
 	 * @description Static helper method for the "happy path" of JSON deserialization. Sends a HTTP requested based on method parameter.
 	 * @return CW_ToolingApiObjects DescribeGlobalResult
 	 */
-	private Object submitRestCallAndDeserialize(String relativeUrl, Type classType, String method){
-		return submitRestCallAndDeserialize(relativeUrl, classType, method, null);
+	private String submitRestCallAndDeserialize(String relativeUrl, String method){
+		return submitRestCallAndDeserialize(relativeUrl, method, null);
 	}		
 
 	/*
 	 * @description Static helper method for the "happy path" of JSON deserialization. Sends a HTTP requested based on method parameter and data.
 	 * @return CW_ToolingApiObjects DescribeGlobalResult
 	 */
-	private Object submitRestCallAndDeserialize(String relativeUrl, Type classType, String method, Object data) {
+	private String submitRestCallAndDeserialize(String relativeUrl, String method, Object data) {
 		HttpResponse response = CW_ToolingApiRest.submitRestCall(relativeUrl, method, data);
 		String responseBody = response.getBody();
 		if(String.isNotEmpty(responseBody)) {
-			return JSON.deserialize(responseBody, classType);
+			return responseBody;
 		}
 		return null;
 	}

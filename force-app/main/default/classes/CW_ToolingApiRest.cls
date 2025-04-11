@@ -2,8 +2,6 @@
 * @description Wrapper class for Tooling API REST requests
 */
 public with sharing class CW_ToolingApiRest {
-    public static final String TOOLING_API_URI = '/services/data/v62.0/tooling';
-    
 	/**
 	 * @description Submits the REST HTTP GET request.
 	 * @param relativeUrl The relative URL to append to the Tooling API base URL
@@ -35,7 +33,7 @@ public with sharing class CW_ToolingApiRest {
 	 */
 	public static HttpResponse submitRestCall(String relativeUrl, String method, Object data){
 		HttpRequest queryReq = new HttpRequest();
-		queryReq.setEndpoint('callout:Salesforce_Tooling_API' + TOOLING_API_URI + relativeUrl);
+		queryReq.setEndpoint('callout:Salesforce_Tooling_API' + relativeUrl);
 		queryReq.setMethod('GET');
 		queryReq.setHeader('Content-Type', 'application/json');
 		queryReq.setTimeout(120000);

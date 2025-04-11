@@ -30,7 +30,7 @@ public class CW_ToolingApiTest {
 
         // ACT
         Test.startTest();
-        CW_ToolingApiObjects.DescribeGlobalResult describeGlobalResult = toolingApi.describeGlobal();
+        CW_ToolingApiObjects.DescribeGlobalResult describeGlobalResult = toolingApi.retrieveSObjects();
         Test.stopTest();
 
         // ASSERT
@@ -46,7 +46,7 @@ public class CW_ToolingApiTest {
         // ACT
         try {
             Test.startTest();
-            toolingApi.describeGlobal();
+            toolingApi.retrieveSObjects();
             Test.stopTest();
             System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
         } catch (CW_ToolingApiRest.ToolingAPIException e) {
