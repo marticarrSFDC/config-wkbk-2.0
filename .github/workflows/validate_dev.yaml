@@ -106,37 +106,36 @@ jobs:
         - name: Install Salesforce CLI
           run: npm install --global sfdx-cli
 
-        - name: Authenticate to org
-          run: sfdx auth:sfdxurl:store --sfdx-url-file ./auth/devhub.sfdx --setdefaultusername --setalias devOrg
+        - name: "Authenticate using SFLABS_DEV"
+          run: echo ${{ secrets.SFLABS_DEV }} | sf org login sfdx-url -s -u
 
-        - name: Run Apex Tests with Coverage
+        - name: "Run Apex Tests"
           run: |
-            sfdx force:apex:test:run \
-              --resultformat json \
-              --outputdir test-results \
-              --codecoverage \
-              --testlevel RunLocalTests \
-              --wait 10
+            sf apex test run --test-level RunLocalTests --result-format json --output-dir ./test-results --code-coverage --wait 10
 
-        - name: Check Code Coverage
+        - name: Enforce Coverage Threshold
           run: |
             echo "Checking org-wide coverage..."
-            coverageFile="test-results/test-result-codecoverage.json"
-            if [ ! -f "$coverageFile" ]; then
-              echo "❌ Coverage file not found!"
+            file="./test-results/test-result-codecoverage.json"
+
+            if [ ! -f "$file" ]; then
+              echo "❌ Coverage results not found!"
               exit 1
             fi
 
-            # Compute org-wide average
-            total=$(jq '[.coverage.coverage[].coverage] | add' "$coverageFile")
-            count=$(jq '.coverage.coverage | length' "$coverageFile")
+            total=$(jq '[.coverage.coverage[].coverage] | add' $file)
+            count=$(jq '.coverage.coverage | length' $file)
             avg=$(echo "$total / $count" | bc -l)
+
             echo "📊 Org-wide coverage: $avg%"
 
-            # Fail if < 75
-            if (( $(echo "$avg < 75" | bc -l) )); then
-              echo "❌ Code coverage below 75%!"
+            # Set your desired minimum here (e.g., 75%)
+            threshold=75
+            if (( $(echo "$avg < $threshold" | bc -l) )); then
+              echo "❌ Code coverage below ${threshold}%!"
               exit 1
+            else
+              echo "✅ Coverage check passed."
             fi
           shell: bash
 
