@@ -104,7 +104,7 @@ jobs:
             node-version: '20'
 
         - name: Install Salesforce CLI
-          run: npm install --global sfdx-cli
+          run: npm install --global @salesforce/cli
 
         - name: "Authenticate using SFLABS_DEV"
           run: echo ${{ secrets.SFLABS_DEV }} | sf org login sfdx-url -s -u
