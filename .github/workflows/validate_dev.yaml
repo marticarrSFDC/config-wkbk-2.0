@@ -109,12 +109,26 @@ jobs:
         - name: "Authenticate using SFLABS_DEV"
           run: echo ${{ secrets.SFLABS_DEV }} | sf org login sfdx-url -s -u
 
-        - name: "Run Apex Tests"
+        - name: Run Apex tests in package only
           run: |
-            sf apex test run --test-level RunLocalTests --result-format json --output-dir ./test-results --code-coverage --wait 10
+            TEST_CLASSES=$(find force-app -name "*Test.cls" | sed 's/.*\///' | sed 's/.cls$//' | paste -sd "," -)
+            echo "Running tests: $TEST_CLASSES"
+
+            sf apex test run \
+              --tests "$TEST_CLASSES" \
+              --code-coverage \
+              --result-format json \
+              --output-dir ./test-results \
+              --wait 10
 
         - name: Debug coverage file
           run: cat ./test-results/test-result-codecoverage.json
+
+        - name: Upload Coverage File
+          uses: actions/upload-artifact@v4
+          with:
+            name: apex-codecoverage
+            path: ./test-results/test-result-codecoverage.json
 
         - name: Enforce Coverage Threshold
           run: |
@@ -126,8 +140,8 @@ jobs:
               exit 1
             fi
 
-            total=$(jq '.[0].coverage | add' $file)
-            count=$(jq '.[0].coverage | length' $file)
+            total=$(jq '[.[].coveredPercent] | add' $file)
+            count=$(jq 'length' $file)
             avg=$(echo "$total / $count" | bc -l)
 
             echo "📊 Org-wide coverage: $avg%"
