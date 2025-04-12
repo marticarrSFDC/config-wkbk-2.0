@@ -15,6 +15,20 @@ describe('sheet-formatter', () => {
         expect(spy).toHaveBeenCalled();
     });
 
+    it('generateSpreadsheet - given invalid throws error', () => {
+        // Arrange
+        const type = 'invalid';
+
+        // Act
+        try {
+            SheetFormatter.generateSpreadsheet(type);
+            expect(true).toBe(false);
+        } catch (e) {
+            // Assert
+            expect(e.message).toBe('No formatter found for type: invalid');
+        }
+    });
+
     it('format - given allobjects calls AllObjectsFormatter.format', () => {
         // Arrange
         const type = 'allobjects';
@@ -25,5 +39,19 @@ describe('sheet-formatter', () => {
 
         // Assert
         expect(spy).toHaveBeenCalledWith([]);
+    });
+
+    it('format - given invalid throws error', () => {
+        // Arrange
+        const type = 'invalid';
+
+        // Act
+        try {
+            SheetFormatter.format(type);
+            expect(true).toBe(false);
+        } catch (e) {
+            // Assert
+            expect(e.message).toBe('No formatter found for type: invalid');
+        }
     });
 });

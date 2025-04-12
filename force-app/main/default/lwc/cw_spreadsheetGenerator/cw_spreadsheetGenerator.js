@@ -15,7 +15,6 @@ class SpreadsheetGenerator {
 		createGoogleSpreadsheet({jsonString: JSON.stringify(spreadsheet)})
 		.then(r => {
 			let result = JSON.parse(r);
-			console.log(r);
 			this._spreadsheetId = result.spreadsheetId;
 			console.log(result.spreadsheetUrl);
 
@@ -30,7 +29,7 @@ class SpreadsheetGenerator {
 			});
 		})
 		.catch(error => {
-			console.error('Error creating Google Sheet:', JSON.stringify(error));
+			console.error('Error creating Google Sheet:', error);
 		});
 	}
 
@@ -43,7 +42,7 @@ class SpreadsheetGenerator {
 			console.log(result);
 		})
 		.catch(error => {
-			console.error(error.body.message);
+			console.error('Error populating Google Sheet: ', error);
 		});
 	}
 }

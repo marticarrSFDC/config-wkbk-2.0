@@ -48,4 +48,23 @@ describe('object-processor', () => {
 		expect(table[3]).toEqual(['AgentWork__c', 'AgentWork__c', 'Custom', 'e03', '', 'ReadWrite', 'ReadWrite', 'This object is used for creating fake demo data for analytics - use the Standard Agent Work object for any functionality you want to update/work.', 'Deployed']);
 		expect(table[4]).toEqual(['Criteria', 'FSL__Criteria__c', 'Custom Setting', '0Ap', '', 'ReadWrite', 'Private', '', 'Deployed']);
 	});
+
+	it('buildTable - response failure', async () => {
+		// Arrange
+		const processor = new ObjectsProcessor();
+		getSObjects.mockRejectedValue('error');
+		query.mockResolvedValue(JSON.stringify(ENTITY_MOCK));
+
+		// Act
+		let table = null;
+		try {
+			table = await processor.buildTable();
+		} catch (e) {
+			// Assert
+			expect(getSObjects).toHaveBeenCalled();
+			expect(query).toHaveBeenCalledWith({"query": "SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true"});
+			expect(table).toBeNull();
+			expect(e.message).toBe('Error retrieving metadata: error');
+		}
+	});
 });

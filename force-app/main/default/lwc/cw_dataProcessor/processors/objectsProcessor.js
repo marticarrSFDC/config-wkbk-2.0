@@ -59,10 +59,7 @@ class ObjectsProcessor {
 						};
 					}
 					
-					console.warn('sobjects failed:', sobjects.reason);
-					return null;
-				}).catch(error => {
-					console.error(error.body.message);
+					throw new Error('Error retrieving metadata: ' + (sobjects.reason || entities.reason));
 				});
 		}
 	
