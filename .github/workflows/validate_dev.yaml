@@ -123,7 +123,7 @@ jobs:
               exit 1
             fi
 
-            total=$(jq '.[0].coverage] | add' $file)
+            total=$(jq '.[0].coverage | add' $file)
             count=$(jq '.[0].coverage | length' $file)
             avg=$(echo "$total / $count" | bc -l)
 
