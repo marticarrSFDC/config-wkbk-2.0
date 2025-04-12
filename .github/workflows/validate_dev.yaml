@@ -123,8 +123,8 @@ jobs:
               exit 1
             fi
 
-            total=$(jq '[.coverage.coverage[].coverage] | add' $file)
-            count=$(jq '.coverage.coverage | length' $file)
+            total=$(jq '.[0].coverage] | add' $file)
+            count=$(jq '.[0].coverage | length' $file)
             avg=$(echo "$total / $count" | bc -l)
 
             echo "📊 Org-wide coverage: $avg%"
