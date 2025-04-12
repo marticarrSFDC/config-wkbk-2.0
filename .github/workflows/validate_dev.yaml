@@ -113,6 +113,9 @@ jobs:
           run: |
             sf apex test run --test-level RunLocalTests --result-format json --output-dir ./test-results --code-coverage --wait 10
 
+        - name: Debug coverage file
+          run: cat ./test-results/test-result-codecoverage.json
+
         - name: Enforce Coverage Threshold
           run: |
             echo "Checking org-wide coverage..."
