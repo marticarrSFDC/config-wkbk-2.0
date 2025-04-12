@@ -106,8 +106,8 @@ jobs:
         - name: Install Salesforce CLI
           run: npm install --global @salesforce/cli
 
-        - name: "Authenticate using SFLABS_DEV"
-          run: echo ${{ secrets.SFLABS_DEV }} | sf org login sfdx-url -s -u
+        - name: "Authenticate using CW_DEMO"
+          run: echo ${{ secrets.CW_DEMO }} | sf org login sfdx-url -s -u
 
         - name: Run Apex tests in package only
           run: |
