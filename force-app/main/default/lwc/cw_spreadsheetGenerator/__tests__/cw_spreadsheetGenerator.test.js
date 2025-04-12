@@ -19,8 +19,12 @@ jest.mock('@salesforce/apex/CW_GoogleSheetsService.populateSheetCallout', () => 
 
 describe('spreadsheet-generator', () => {
     async function flushPromises() {
-    return Promise.resolve();
+        return Promise.resolve();
     }
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
 
     it('createSpreadsheet: success - given sheetNames, generates sheet request body and calls createGoogleSpreadsheet then populateSheetCallout', async () => {
         // Arrange

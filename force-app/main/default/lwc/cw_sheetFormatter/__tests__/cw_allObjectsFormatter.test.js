@@ -1,6 +1,9 @@
 import { AllObjectsFormatter } from '../formatters/allObjectsFormatter.js';
 
 describe('all-objects-formatter', () => {
+	afterEach(() => {
+        jest.restoreAllMocks();
+    });
 
     it('generateSpreadsheet - return All Objects sheet', () => {
         // Arrange

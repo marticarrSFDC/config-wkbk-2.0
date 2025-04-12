@@ -10,7 +10,6 @@ class SpreadsheetGenerator {
 	_spreadsheetId;
 
 	createSpreadsheet(sheetNames) {
-		console.log('createSpreadsheet');
 		const spreadsheet = SheetFormatter.generateSpreadsheet(ALL_OBJECTS);
 		createGoogleSpreadsheet({jsonString: JSON.stringify(spreadsheet)})
 		.then(r => {

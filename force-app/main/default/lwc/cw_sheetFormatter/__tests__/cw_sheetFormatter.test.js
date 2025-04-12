@@ -2,6 +2,9 @@ import { SheetFormatter } from 'c/cw_sheetFormatter';
 import { AllObjectsFormatter } from '.././formatters/allObjectsFormatter.js';
 
 describe('sheet-formatter', () => {
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
 
     it('generateSpreadsheet - given allobjects calls AllObjectsFormatter.generateSpreadsheet', () => {
         // Arrange

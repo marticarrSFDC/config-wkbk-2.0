@@ -26,6 +26,9 @@ jest.mock(
 );
 
 describe('object-processor', () => {
+	afterEach(() => {
+        jest.restoreAllMocks();
+    });
 	
 	it('buildTable - process successful responses', async () => {
 		// Arrange

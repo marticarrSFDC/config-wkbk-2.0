@@ -3,7 +3,6 @@ const COLUMN_WIDTHS = [250, 250, 150, 75, 75, 125, 125, 300, 125];
 
 class AllObjectsFormatter {
 	generateSpreadsheet() {
-		console.log('generateSpreadsheet allobjects');
 		return {
 			properties: {
 				title: 'CW 2.0',
