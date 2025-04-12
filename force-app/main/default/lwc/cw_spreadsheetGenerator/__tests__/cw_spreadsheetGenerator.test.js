@@ -23,7 +23,8 @@ describe('spreadsheet-generator', () => {
     }
 
     afterEach(() => {
-        jest.restoreAllMocks();
+        jest.clearAllMocks();      // clears call history
+        jest.resetAllMocks();      // resets .mockResolvedValue, .mockRejectedValue, etc.
     });
 
     it('createSpreadsheet: success - given sheetNames, generates sheet request body and calls createGoogleSpreadsheet then populateSheetCallout', async () => {
@@ -66,6 +67,7 @@ describe('spreadsheet-generator', () => {
         await flushPromises();
 
         // Assert
+        expect(generateSpreadsheetSpy).toHaveBeenCalledWith('allobjects');
         expect(processSpy).not.toHaveBeenCalled();
         expect(formatSpy).not.toHaveBeenCalled();
         expect(consoleSpy).toHaveBeenCalledWith('Error creating Google Sheet:', 'error');

@@ -27,7 +27,8 @@ jest.mock(
 
 describe('object-processor', () => {
 	afterEach(() => {
-        jest.restoreAllMocks();
+        jest.clearAllMocks();      // clears call history
+        jest.resetAllMocks();      // resets .mockResolvedValue, .mockRejectedValue, etc.
     });
 	
 	it('buildTable - process successful responses', async () => {
