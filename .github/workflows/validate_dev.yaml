@@ -91,12 +91,57 @@ jobs:
           steps.run-code-analyzer.outputs.num-violations > 10
         run: exit 1
 
+  apex-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install Salesforce CLI
+        uses: salesforcecli/setup-sfdx@v1
+
+      - name: Authenticate to org
+        run: sfdx auth:sfdxurl:store --sfdx-url-file ./auth/devhub.sfdx --setdefaultusername --setalias devOrg
+
+      - name: Run Apex Tests with Coverage
+        run: |
+          sfdx force:apex:test:run \
+            --resultformat json \
+            --outputdir test-results \
+            --codecoverage \
+            --testlevel RunLocalTests \
+            --wait 10
+
+      - name: Check Code Coverage
+        run: |
+          echo "Checking org-wide coverage..."
+          coverageFile="test-results/test-result-codecoverage.json"
+          if [ ! -f "$coverageFile" ]; then
+            echo "❌ Coverage file not found!"
+            exit 1
+          fi
+
+          # Compute org-wide average
+          total=$(jq '[.coverage.coverage[].coverage] | add' "$coverageFile")
+          count=$(jq '.coverage.coverage | length' "$coverageFile")
+          avg=$(echo "$total / $count" | bc -l)
+          echo "📊 Org-wide coverage: $avg%"
+
+          # Fail if < 75
+          if (( $(echo "$avg < 75" | bc -l) )); then
+            echo "❌ Code coverage below 75%!"
+            exit 1
+          fi
+        shell: bash
+
   validate-deployment:
     runs-on: ubuntu-latest
     needs: 
       - salesforce-code-analyzer-workflow
       - lwc-coverage
       - mutation-tests
+      - apex-tests
     container:
       image: salesforce/cli:latest-slim
     steps:

@@ -23,22 +23,22 @@ public class CW_ToolingApiTest {
     }
 
     @IsTest
-    static void describeGlobalGivenSuccessfulCalloutReturnsDescribeGlobalResult() {
+    static void retrieveSObjectsGivenSuccessfulCalloutReturnsDescribeGlobalResult() {
         // ARRANGE
         Test.setMock(HttpCalloutMock.class, new ToolingApiMock());
         CW_ToolingApi toolingApi = new CW_ToolingApi();
 
         // ACT
         Test.startTest();
-        CW_ToolingApiObjects.DescribeGlobalResult describeGlobalResult = toolingApi.describeGlobal();
+        String result = toolingApi.retrieveSObjects();
         Test.stopTest();
 
         // ASSERT
-        System.assertNotEquals(null, describeGlobalResult, 'Response should not be null for a successful callout.');
+        System.assertNotEquals(null, result, 'Response should not be null for a successful callout.');
     }
 
     @IsTest
-    static void describeGlobalGivenUnsuccessfulCalloutThrowsException() {
+    static void retrieveSObjectsGivenUnsuccessfulCalloutThrowsException() {
         // ARRANGE
         Test.setMock(HttpCalloutMock.class, new ToolingApiMockError());
         CW_ToolingApi toolingApi = new CW_ToolingApi();
@@ -46,7 +46,40 @@ public class CW_ToolingApiTest {
         // ACT
         try {
             Test.startTest();
-            toolingApi.describeGlobal();
+            toolingApi.retrieveSObjects();
+            Test.stopTest();
+            System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
+        } catch (CW_ToolingApiRest.ToolingAPIException e) {
+            // ASSERT
+            System.assertEquals('ERROR_MESSAGE : Something went wrong', e.getMessage(), 'Exception message should match the error message in the mock response.');
+        }
+    }
+
+    @IsTest
+    static void queryGivenSuccessfulCalloutReturnsDescribeGlobalResult() {
+        // ARRANGE
+        Test.setMock(HttpCalloutMock.class, new ToolingApiMock());
+        CW_ToolingApi toolingApi = new CW_ToolingApi();
+
+        // ACT
+        Test.startTest();
+        String result = toolingApi.query('SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true');
+        Test.stopTest();
+
+        // ASSERT
+        System.assertNotEquals(null, result, 'Response should not be null for a successful callout.');
+    }
+
+    @IsTest
+    static void queryGivenUnsuccessfulCalloutThrowsException() {
+        // ARRANGE
+        Test.setMock(HttpCalloutMock.class, new ToolingApiMockError());
+        CW_ToolingApi toolingApi = new CW_ToolingApi();
+
+        // ACT
+        try {
+            Test.startTest();
+            toolingApi.query('SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true');
             Test.stopTest();
             System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
         } catch (CW_ToolingApiRest.ToolingAPIException e) {
@@ -67,9 +100,7 @@ public class CW_ToolingApiTest {
         public HTTPResponse respond(HTTPRequest req) {
             HttpResponse res = new HttpResponse();
             Map<String, Object> resBody = new Map<String, Object>();
-            if((req.getEndpoint()).contains('/sobjects')) {
-                resBody.put('response_x', new CW_ToolingApiObjects.DescribeGlobalResult());
-			}
+            resBody.put('response_x', 'response');
             res.setStatusCode(200);
             res.setHeader('Content-Type', 'application/json');
             res.setBody(JSON.serialize(resBody));

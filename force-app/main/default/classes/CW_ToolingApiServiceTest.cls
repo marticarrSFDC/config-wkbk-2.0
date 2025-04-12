@@ -1,22 +1,47 @@
 @isTest
 private class CW_ToolingApiServiceTest {
     @IsTest
-    static void getMetadataCalloutTest() {
+    static void getSObjectsCalloutTest() {
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMock());
-        String response = CW_ToolingApiService.getMetadataCallout();
+        String response = CW_ToolingApiService.getSObjects();
         Test.stopTest();
 
         System.assert(String.isNotBlank(response), 'The response should have value');
     }
 
     @IsTest
-    static void getMetadataCalloutNegativeTest() {
+    static void getSObjectsCalloutNegativeTest() {
         CW_ToolingApiRest.ToolingAPIException ex;
         try {
             Test.startTest();
             Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMockNegative());
-            CW_ToolingApiService.getMetadataCallout();
+            CW_ToolingApiService.getSObjects();
+            Test.stopTest();
+            System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
+        } catch(CW_ToolingApiRest.ToolingAPIException receivedEx) {
+            ex = receivedEx;
+        }
+        
+        System.Assert.isTrue(ex != null, 'A CW_ToolingApi.ToolingAPIException should have been thrown');
+    }
+
+    static void queryCalloutTest() {
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMock());
+        String response = CW_ToolingApiService.query('SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true');
+        Test.stopTest();
+
+        System.assert(String.isNotBlank(response), 'The response should have value');
+    }
+
+    @IsTest
+    static void queryCalloutNegativeTest() {
+        CW_ToolingApiRest.ToolingAPIException ex;
+        try {
+            Test.startTest();
+            Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMockNegative());
+            CW_ToolingApiService.query('SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true');
             Test.stopTest();
             System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
         } catch(CW_ToolingApiRest.ToolingAPIException receivedEx) {

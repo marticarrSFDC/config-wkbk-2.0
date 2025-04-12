@@ -51,7 +51,7 @@ public with sharing class CW_ToolingApi {
 	/**
      * @description Describes all the sobjects via the tooling api.  This is the equivalent of calling //instance/api/tooling/sobjects via the Tooling REST API.
 	 * @param query The SOQL query to execute
-	 * @return CW_ToolingApiObjects DescribeGlobalResult
+	 * @return String responseBody
      * @throws ToolingAPIException if an an exception was encountered.
      */
     public String query(String query) {
@@ -60,33 +60,21 @@ public with sharing class CW_ToolingApi {
 	
 	/**
      * @description Describes all the sobjects via the tooling api.  This is the equivalent of calling //instance/api/tooling/sobjects via the Tooling REST API.
-     * @return CW_ToolingApiObjects DescribeGlobalResult
+	 * @return String responseBody
      * @throws ToolingAPIException if an an exception was encountered.
      */
     public String retrieveSObjects() {
         return submitRestCallAndDeserialize(CW_Constants.API_URI + '/sobjects');
     }
 
-	/*
-	 * @description Static helper method for the "happy path" of JSON deserialization. Sends a HTTP GET request.
-	 * @return CW_ToolingApiObjects DescribeGlobalResult
-	 */
 	private String submitRestCallAndDeserialize(String relativeUrl){
 		return submitRestCallAndDeserialize(relativeUrl, 'GET');
 	}
 
-	/*
-	 * @description Static helper method for the "happy path" of JSON deserialization. Sends a HTTP requested based on method parameter.
-	 * @return CW_ToolingApiObjects DescribeGlobalResult
-	 */
 	private String submitRestCallAndDeserialize(String relativeUrl, String method){
 		return submitRestCallAndDeserialize(relativeUrl, method, null);
 	}		
 
-	/*
-	 * @description Static helper method for the "happy path" of JSON deserialization. Sends a HTTP requested based on method parameter and data.
-	 * @return CW_ToolingApiObjects DescribeGlobalResult
-	 */
 	private String submitRestCallAndDeserialize(String relativeUrl, String method, Object data) {
 		HttpResponse response = CW_ToolingApiRest.submitRestCall(relativeUrl, method, data);
 		String responseBody = response.getBody();
