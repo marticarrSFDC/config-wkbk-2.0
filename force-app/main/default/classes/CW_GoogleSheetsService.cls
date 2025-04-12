@@ -1,4 +1,13 @@
+/**
+ * @description Service class for Google Sheets landing page
+**/
 public with sharing class CW_GoogleSheetsService {
+    /**
+	 * @description Create a new Google Spreadsheet
+     * @param jsonString The JSON string to use for the request body
+	 * @return The response from the Google Sheets API
+     * @throws CalloutException if the callout fails
+	 **/
     @AuraEnabled(cacheable=false)
     public static String createGoogleSpreadsheet(String jsonString) {
         return createSpreadsheetCallout(jsonString);
@@ -21,6 +30,14 @@ public with sharing class CW_GoogleSheetsService {
         }
     }
 
+    /**
+	 * @description Uses the given Session Id, useful when using the API in a batch context
+     * @param spreadsheetId The Spreadsheet Id to use
+     * @param sheetName The name of the sheet to update
+     * @param jsonString The JSON string to use for the request body
+     * @return The response from the Google Sheets API
+     * @throws CalloutException if the callout fails
+	 **/
     @AuraEnabled(cacheable=false)
     public static String populateSheetCallout(String spreadsheetId, String sheetName, String jsonString) {
         HttpRequest req = new HttpRequest();

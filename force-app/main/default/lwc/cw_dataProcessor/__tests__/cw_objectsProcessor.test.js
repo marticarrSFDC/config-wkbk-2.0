@@ -1,4 +1,3 @@
-import { DataProcessor } from 'c/cw_dataProcessor';
 import { ObjectsProcessor } from '.././processors/objectsProcessor.js';
 
 import getSObjects from "@salesforce/apex/CW_ToolingApiService.getSObjects";

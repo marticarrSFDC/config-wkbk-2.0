@@ -9,13 +9,14 @@ describe('sheet-formatter', () => {
     it('generateSpreadsheet - given allobjects calls AllObjectsFormatter.generateSpreadsheet', () => {
         // Arrange
         const type = 'allobjects';
-        const spy = jest.spyOn(AllObjectsFormatter.prototype, 'generateSpreadsheet').mockResolvedValue({});
+        const spy = jest.spyOn(AllObjectsFormatter.prototype, 'generateSpreadsheet').mockReturnValue({});
 
         // Act
         const sheet = SheetFormatter.generateSpreadsheet(type);
 
         // Assert
         expect(spy).toHaveBeenCalled();
+        expect(sheet).toEqual({});
     });
 
     it('generateSpreadsheet - given invalid throws error', () => {
@@ -35,13 +36,14 @@ describe('sheet-formatter', () => {
     it('format - given allobjects calls AllObjectsFormatter.format', () => {
         // Arrange
         const type = 'allobjects';
-        const spy = jest.spyOn(AllObjectsFormatter.prototype, 'format').mockResolvedValue({});
+        const spy = jest.spyOn(AllObjectsFormatter.prototype, 'format').mockReturnValue({});
 
         // Act
         const sheet = SheetFormatter.format(type, []);
 
         // Assert
         expect(spy).toHaveBeenCalledWith([]);
+        expect(sheet).toEqual({});
     });
 
     it('format - given invalid throws error', () => {

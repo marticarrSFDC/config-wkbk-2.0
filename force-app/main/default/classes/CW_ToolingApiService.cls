@@ -14,7 +14,8 @@ public with sharing class CW_ToolingApiService {
 
     /**
 	 * @description Query Tooling API metadata
-     * @return JSON string of the metadata
+     * @param query The SOQL query to execute
+     * @return JSON string of the query result
 	 **/
     @AuraEnabled(cacheable=false)
     public static String query(String query) {

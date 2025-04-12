@@ -50,7 +50,8 @@ public with sharing class CW_ToolingApi {
 
 	/**
      * @description Describes all the sobjects via the tooling api.  This is the equivalent of calling //instance/api/tooling/sobjects via the Tooling REST API.
-     * @return String query result
+	 * @param query The SOQL query to execute
+	 * @return CW_ToolingApiObjects DescribeGlobalResult
      * @throws ToolingAPIException if an an exception was encountered.
      */
     public String query(String query) {
