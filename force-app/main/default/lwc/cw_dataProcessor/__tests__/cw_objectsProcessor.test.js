@@ -52,11 +52,30 @@ describe('object-processor', () => {
 		expect(table[4]).toEqual(['Criteria', 'FSL__Criteria__c', 'Custom Setting', '0Ap', '', 'ReadWrite', 'Private', '', 'Deployed']);
 	});
 
-	it('buildTable - response failure', async () => {
+	it('buildTable - getSObjects failure', async () => {
 		// Arrange
 		const processor = new ObjectsProcessor();
 		getSObjects.mockRejectedValue('error');
 		query.mockResolvedValue(JSON.stringify(ENTITY_MOCK));
+
+		// Act
+		let table = null;
+		try {
+			table = await processor.buildTable();
+		} catch (e) {
+			// Assert
+			expect(getSObjects).toHaveBeenCalled();
+			expect(query).toHaveBeenCalledWith({"query": "SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true"});
+			expect(table).toBeNull();
+			expect(e.message).toBe('Error retrieving metadata: error');
+		}
+	});
+
+	it('buildTable - query failure', async () => {
+		// Arrange
+		const processor = new ObjectsProcessor();
+		getSObjects.mockResolvedValue(JSON.stringify(SOBJECTS_MOCK));
+		query.mockRejectedValue('error');
 
 		// Act
 		let table = null;

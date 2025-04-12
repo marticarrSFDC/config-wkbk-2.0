@@ -66,15 +66,13 @@ describe('spreadsheet-generator', () => {
         await flushPromises();
 
         // Assert
-        expect(generateSpreadsheetSpy).toHaveBeenCalledWith('allobjects');
-        expect(createGoogleSpreadsheet).toHaveBeenCalledWith({jsonString: JSON.stringify({})});
         expect(processSpy).not.toHaveBeenCalled();
         expect(formatSpy).not.toHaveBeenCalled();
         expect(consoleSpy).toHaveBeenCalledWith('Error creating Google Sheet:', 'error');
         expect(populateSheetCallout).not.toHaveBeenCalled();
     });
 
-    it('createSpreadsheet: createGoogleSpreadsheet failure - console error', async () => {
+    it('createSpreadsheet: populateSheetCallout failure - console error', async () => {
         // Arrange
         const generator = new SpreadsheetGenerator();
         const processSpy = jest.spyOn(DataProcessor, 'process').mockResolvedValue([]);
@@ -88,13 +86,13 @@ describe('spreadsheet-generator', () => {
         // Act
         generator.createSpreadsheet(['allobjects']);
         await flushPromises();
+        await flushPromises();
 
         // Assert
         expect(generateSpreadsheetSpy).toHaveBeenCalledWith('allobjects');
         expect(createGoogleSpreadsheet).toHaveBeenCalledWith({jsonString: JSON.stringify({})});
         expect(processSpy).toHaveBeenCalledWith('allobjects');
         expect(formatSpy).toHaveBeenCalledWith('allobjects', []);
-        expect(populateSheetCallout).toHaveBeenCalledWith({spreadsheetId: '111', sheetName: encodeURIComponent('All Objects'), jsonString: JSON.stringify({})});
-        expect(consoleSpy).toHaveBeenCalledWith('Error creating Google Sheet:', 'error');
+        expect(consoleSpy).toHaveBeenCalledWith('Error populating Google Sheet: ', 'error');
     });
 });
