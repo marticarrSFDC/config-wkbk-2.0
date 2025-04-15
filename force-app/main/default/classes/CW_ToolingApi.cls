@@ -51,7 +51,7 @@ public with sharing class CW_ToolingApi {
 	/**
      * @description Describes all the sobjects via the tooling api.  This is the equivalent of calling //instance/api/tooling/sobjects via the Tooling REST API.
 	 * @param query The SOQL query to execute
-	 * @return String responseBody
+	 * @return CW_ToolingApiObjects DescribeGlobalResult
      * @throws ToolingAPIException if an an exception was encountered.
      */
     public String query(String query) {
@@ -77,10 +77,6 @@ public with sharing class CW_ToolingApi {
 
 	private String submitRestCallAndDeserialize(String relativeUrl, String method, Object data) {
 		HttpResponse response = CW_ToolingApiRest.submitRestCall(relativeUrl, method, data);
-		String responseBody = response.getBody();
-		if(String.isNotEmpty(responseBody)) {
-			return responseBody;
-		}
-		return null;
+		return response.getBody();
 	}
 }

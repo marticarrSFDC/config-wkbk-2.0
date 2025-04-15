@@ -78,7 +78,7 @@ public with sharing class CW_ToolingApiRest {
 	private static HttpResponse handleResponseStatus(String method, HttpResponse queryRes) {
 		if(queryRes.getStatusCode() != getSuccessCode(method)) {
 			if(queryRes.getBody().length() > 0) {
-				throw new ToolingAPIException((List<ErrorResponse>)JSON.deserialize(queryRes.getBody(), List<ErrorResponse>.class));
+				throw new ToolingAPIException((ErrorResponse)JSON.deserialize(queryRes.getBody(), ErrorResponse.class));
 			} else {
 				throw new ToolingAPIException('Unexpected HTTP Status ' + queryRes.getStatusCode());
 			}
@@ -99,7 +99,7 @@ public with sharing class CW_ToolingApiRest {
     /**
 	 * @description Interface for serializing data to JSON
 	 */
-	private interface ISerialize {
+	public interface ISerialize {
 		/**
 		 * @description Serializes data to JSON
 		 * @param generator The JSON generator to use
@@ -115,8 +115,8 @@ public with sharing class CW_ToolingApiRest {
 		* @description Constructor override
 		* @param errorResponses The error responses from the Tooling API
 		*/
-		public ToolingAPIException(List<ErrorResponse> errorResponses){
-			this(errorResponses[0].errorCode + ' : ' + errorResponses[0].message);
+		public ToolingAPIException(ErrorResponse error){
+			this(error.message);
 		}
 	}
 
@@ -129,8 +129,6 @@ public with sharing class CW_ToolingApiRest {
 	* @description Wrapper class for Tooling API errors
 	*/
 	public class ErrorResponse{
-        public List<String> fields;
-        public String errorCode;
         public String message;
     }
 }

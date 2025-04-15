@@ -88,6 +88,17 @@ public class CW_ToolingApiTest {
         }
     }
 
+    // Test data for the unit tests
+    private class TestData implements ISerialize {
+        public void serialize(JSONGenerator jsonGen) {
+            jsonGen.writeStringField('key', 'value');
+        }
+    }
+
+    private class InvalidData {
+        // No implementation needed for this invalid data
+    }
+
     /**
      * @description Mock class for the Tooling API service
      */
