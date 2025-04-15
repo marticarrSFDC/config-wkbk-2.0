@@ -50,7 +50,7 @@ private class CW_ToolingApiRestTest {
             System.assert(false, 'Expected an exception');
         } catch (Exception e) {
             // ASSERT
-            System.assertEquals('Bad Request: Invalid query', e.getMessage(), 'Exception message should match the error message in the mock response.');
+            System.assertEquals('Invalid query', e.getMessage(), 'Exception message should match the error message in the mock response.');
         }
     }
 
@@ -90,7 +90,7 @@ private class CW_ToolingApiRestTest {
         public HttpResponse respond(HttpRequest request) {
             HttpResponse response = new HttpResponse();
             response.setHeader('Content-Type', 'application/json');
-            response.setBody('{"message":"Bad Request: Invalid query"}');
+            response.setBody('{"errorCode":"BAD_REQUEST","message":"Invalid query"}');
             response.setStatusCode(401);
             return response;
         }

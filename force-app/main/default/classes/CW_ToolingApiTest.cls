@@ -84,12 +84,12 @@ public class CW_ToolingApiTest {
             System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
         } catch (CW_ToolingApiRest.ToolingAPIException e) {
             // ASSERT
-            System.assertEquals('ERROR_MESSAGE : Something went wrong', e.getMessage(), 'Exception message should match the error message in the mock response.');
+            System.assertEquals('Something went wrong', e.getMessage(), 'Exception message should match the error message in the mock response.');
         }
     }
 
     // Test data for the unit tests
-    private class TestData implements ISerialize {
+    private class TestData implements CW_ToolingApiRest.ISerialize {
         public void serialize(JSONGenerator jsonGen) {
             jsonGen.writeStringField('key', 'value');
         }
@@ -133,7 +133,7 @@ public class CW_ToolingApiTest {
             HttpResponse res = new HttpResponse();
             res.setStatusCode(400);
             res.setHeader('Content-Type', 'application/json');
-            res.setBody('[{"errorCode":"ERROR_MESSAGE", "message":"Something went wrong"}]');
+            res.setBody('{"errorCode":"ERROR_MESSAGE", "message":"Something went wrong"}');
             return res;
         }
     }

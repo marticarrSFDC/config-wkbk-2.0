@@ -47,8 +47,8 @@ private class CW_ToolingApiServiceTest {
         } catch(CW_ToolingApiRest.ToolingAPIException receivedEx) {
             ex = receivedEx;
         }
-        
-        System.Assert.isTrue(ex != null, 'A CW_ToolingApi.ToolingAPIException should have been thrown');
+
+        System.assertEquals('error', ex.getMessage(), 'Exception message should match the error message in the mock response.');
     }
 
     /**
@@ -81,7 +81,7 @@ private class CW_ToolingApiServiceTest {
         public HttpResponse respond(HttpRequest request) {
             HttpResponse response = new HttpResponse();
             response.setHeader('Content-Type', 'application/json');
-            response.setBody('[{"response":"error"}]');
+            response.setBody('{"errorCode":"ERROR_MESSAGE","message":"error"}]');
             response.setStatusCode(500);
             return response;
         }
