@@ -2,7 +2,7 @@
 private class CW_ToolingApiRestTest {
  
     @IsTest
-    static void submitRestCall_givenISerializeData_returnsSuccess() {
+    static void submitRestCallGivenISerializeDataReturnsSuccess() {
         // ARRANGE
         Test.setMock(HttpCalloutMock.class, new ToolingApiMock());
 
@@ -15,11 +15,11 @@ private class CW_ToolingApiRestTest {
 
         // ASSERT
         System.assertEquals(200, response.getStatusCode());
-        System.assertEquals('{"success": true}', response.getBody());
+        System.assertEquals('{"success": true}', response.getBody(), 'Response body should match the expected JSON string.');
     }
 
     @IsTest
-    static void submitRestCall_givenData_returnsSuccess() {
+    static void submitRestCallGivenDataReturnsSuccess() {
         // ARRANGE
         Test.setMock(HttpCalloutMock.class, new ToolingApiMock());
 
@@ -32,11 +32,11 @@ private class CW_ToolingApiRestTest {
 
         // ASSERT
         System.assertEquals(200, response.getStatusCode());
-        System.assertEquals('{"success": true}', response.getBody());
+        System.assertEquals('{"success": true}', response.getBody(), 'Response body should match the expected JSON string.');
     }
 
     @IsTest
-    static void submitRestCall_givenCalloutError_throwsException() {
+    static void submitRestCallGivenCalloutErrorThrowsException() {
         // ARRANGE
         Test.setMock(HttpCalloutMock.class, new ToolingApiMockError());
 
@@ -46,7 +46,7 @@ private class CW_ToolingApiRestTest {
 
         // ACT
         try {
-            HttpResponse response = CW_ToolingApiRest.submitRestCall(relativeUrl, method, data);
+            CW_ToolingApiRest.submitRestCall(relativeUrl, method, data);
             System.assert(false, 'Expected an exception');
         } catch (Exception e) {
             // ASSERT
@@ -54,17 +54,25 @@ private class CW_ToolingApiRestTest {
         }
     }
 
+    /**
+     * @description Test data class for unit tests
+     */
     class ISerializeData implements CW_ToolingApiRest.ISerialize {
         public void serialize(JSONGenerator jsonGen) {
             jsonGen.writeStringField('key', 'value');
         }
     }
 
+    /**
+     * @description Test data class for unit tests
+     */
     class TestData {
         // No implementation needed for this invalid data
     }
 
-    // Mock HTTP response generator for the unit tests
+    /**
+     * @description Mock HTTP response generator for the unit tests
+     */ 
     class ToolingApiMock implements HttpCalloutMock {
         public HttpResponse respond(HttpRequest request) {
             HttpResponse response = new HttpResponse();
@@ -75,7 +83,9 @@ private class CW_ToolingApiRestTest {
         }
     }
 
-    // Mock HTTP response generator for the unit tests (error case)
+    /**
+     * @description Mock class for the Tooling API service
+     */
     class ToolingApiMockError implements HttpCalloutMock {
         public HttpResponse respond(HttpRequest request) {
             HttpResponse response = new HttpResponse();
