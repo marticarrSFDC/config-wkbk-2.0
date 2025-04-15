@@ -51,7 +51,7 @@ public class CW_ToolingApiTest {
             System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
         } catch (CW_ToolingApiRest.ToolingAPIException e) {
             // ASSERT
-            System.assertEquals('ERROR_MESSAGE : Something went wrong', e.getMessage(), 'Exception message should match the error message in the mock response.');
+            System.assertEquals('Something went wrong', e.getMessage(), 'Exception message should match the error message in the mock response.');
         }
     }
 

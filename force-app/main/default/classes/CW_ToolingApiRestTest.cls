@@ -14,7 +14,7 @@ private class CW_ToolingApiRestTest {
         HttpResponse response = CW_ToolingApiRest.submitRestCall(relativeUrl, method, data);
 
         // ASSERT
-        System.assertEquals(200, response.getStatusCode());
+        System.assertEquals(200, response.getStatusCode(), 'Status code should be 200 for a successful callout.');
         System.assertEquals('{"success": true}', response.getBody(), 'Response body should match the expected JSON string.');
     }
 
@@ -31,7 +31,7 @@ private class CW_ToolingApiRestTest {
         HttpResponse response = CW_ToolingApiRest.submitRestCall(relativeUrl, method, data);
 
         // ASSERT
-        System.assertEquals(200, response.getStatusCode());
+        System.assertEquals(200, response.getStatusCode(), 'Status code should be 200 for a successful callout.');
         System.assertEquals('{"success": true}', response.getBody(), 'Response body should match the expected JSON string.');
     }
 
@@ -58,6 +58,10 @@ private class CW_ToolingApiRestTest {
      * @description Test data class for unit tests
      */
     class ISerializeData implements CW_ToolingApiRest.ISerialize {
+        /**
+         * @description Serializes the data to JSON format
+         * @param jsonGen The JSON generator to use for serialization
+         */
         public void serialize(JSONGenerator jsonGen) {
             jsonGen.writeStringField('key', 'value');
         }
@@ -66,14 +70,17 @@ private class CW_ToolingApiRestTest {
     /**
      * @description Test data class for unit tests
      */
-    class TestData {
-        // No implementation needed for this invalid data
-    }
+    class TestData {}
 
     /**
      * @description Mock HTTP response generator for the unit tests
      */ 
     class ToolingApiMock implements HttpCalloutMock {
+        /**
+         * @description Responds to the HTTP request
+         * @param request The HTTP request that is sent to the Tooling API
+         * @return HTTPResponse The HTTP response for the Tooling API request
+         */
         public HttpResponse respond(HttpRequest request) {
             HttpResponse response = new HttpResponse();
             response.setHeader('Content-Type', 'application/json');
@@ -87,6 +94,11 @@ private class CW_ToolingApiRestTest {
      * @description Mock class for the Tooling API service
      */
     class ToolingApiMockError implements HttpCalloutMock {
+        /**
+         * @description Responds to the HTTP request
+         * @param request The HTTP request that is sent to the Tooling API
+         * @return HTTPResponse The HTTP response for the Tooling API request
+         */
         public HttpResponse respond(HttpRequest request) {
             HttpResponse response = new HttpResponse();
             response.setHeader('Content-Type', 'application/json');
