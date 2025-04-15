@@ -1,4 +1,4 @@
-import { createElement } from "lwc";
+import { createElement } from "@lwc/engine-dom";
 import Cw_header from "c/cw_header";
 
 describe("c-cw-header", () => {

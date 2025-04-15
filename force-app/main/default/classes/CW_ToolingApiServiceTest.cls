@@ -1,31 +1,65 @@
 @isTest
 private class CW_ToolingApiServiceTest {
     @IsTest
-    static void getMetadataCalloutTest() {
+    static void getSObjectsCalloutTest() {
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMock());
-        String response = CW_ToolingApiService.getMetadataCallout();
+        String response = CW_ToolingApiService.getSObjects();
         Test.stopTest();
 
         System.assert(String.isNotBlank(response), 'The response should have value');
     }
 
     @IsTest
-    static void getMetadataCalloutNegativeTest() {
-        CW_ToolingApi.ToolingAPIException ex;
+    static void getSObjectsCalloutNegativeTest() {
+        CW_ToolingApiRest.ToolingAPIException ex;
         try {
             Test.startTest();
             Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMockNegative());
-            String response = CW_ToolingApiService.getMetadataCallout();
+            CW_ToolingApiService.getSObjects();
             Test.stopTest();
-        } catch(CW_ToolingApi.ToolingAPIException receivedEx) {
+            System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
+        } catch(CW_ToolingApiRest.ToolingAPIException receivedEx) {
             ex = receivedEx;
         }
         
         System.Assert.isTrue(ex != null, 'A CW_ToolingApi.ToolingAPIException should have been thrown');
     }
 
+    static void queryCalloutTest() {
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMock());
+        String response = CW_ToolingApiService.query('SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true');
+        Test.stopTest();
+
+        System.assert(String.isNotBlank(response), 'The response should have value');
+    }
+
+    @IsTest
+    static void queryCalloutNegativeTest() {
+        CW_ToolingApiRest.ToolingAPIException ex;
+        try {
+            Test.startTest();
+            Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMockNegative());
+            CW_ToolingApiService.query('SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true');
+            Test.stopTest();
+            System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
+        } catch(CW_ToolingApiRest.ToolingAPIException receivedEx) {
+            ex = receivedEx;
+        }
+
+        System.assertEquals('error', ex.getMessage(), 'Exception message should match the error message in the mock response.');
+    }
+
+    /**
+     * @description Mock class for the Tooling API service
+     */
     private class CW_ToolingApiServiceMock implements HttpCalloutMock {
+        /**
+         * @description Responds to the HTTP request
+         * @param request The HTTP request that is sent to the Tooling API
+         * @return HTTPResponse The HTTP response for the Tooling API request
+         */
         public HttpResponse respond(HttpRequest request) {
             HttpResponse response = new HttpResponse();
             response.setHeader('Content-Type', 'application/json');
@@ -35,11 +69,19 @@ private class CW_ToolingApiServiceTest {
         }
     }
 
+    /**
+     * @description Mock class for the Tooling API service
+     */
     private class CW_ToolingApiServiceMockNegative implements HttpCalloutMock {
+        /**
+         * @description Responds to the HTTP request
+         * @param request The HTTP request that is sent to the Tooling API
+         * @return HTTPResponse The HTTP response for the Tooling API request
+         */
         public HttpResponse respond(HttpRequest request) {
             HttpResponse response = new HttpResponse();
             response.setHeader('Content-Type', 'application/json');
-            response.setBody('[{"response":"error"}]');
+            response.setBody('{"errorCode":"ERROR_MESSAGE","message":"error"}]');
             response.setStatusCode(500);
             return response;
         }

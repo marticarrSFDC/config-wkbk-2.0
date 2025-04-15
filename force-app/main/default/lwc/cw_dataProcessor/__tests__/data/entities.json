@@ -1,0 +1,42 @@
+{
+  "size": 3,
+  "totalSize": 3,
+  "done": true,
+  "queryLocator": null,
+  "entityTypeName": "EntityDefinition",
+  "records": [
+    {
+      "attributes": {
+        "type": "EntityDefinition",
+        "url": "/services/data/v62.0/tooling/sobjects/EntityDefinition/Account"
+      },
+      "DeploymentStatus": null,
+      "Description": null,
+      "ExternalSharingModel": "Private",
+      "InternalSharingModel": "ReadWrite",
+      "QualifiedApiName": "Account"
+    },
+    {
+      "attributes": {
+        "type": "EntityDefinition",
+        "url": "/services/data/v62.0/tooling/sobjects/EntityDefinition/01IDp000001O3Qf"
+      },
+      "DeploymentStatus": "Deployed",
+      "Description": "This object is used for creating fake demo data for analytics - use the Standard Agent Work object for any functionality you want to update/work.",
+      "ExternalSharingModel": "ReadWrite",
+      "InternalSharingModel": "ReadWrite",
+      "QualifiedApiName": "AgentWork__c"
+    },
+    {
+      "attributes": {
+        "type": "EntityDefinition",
+        "url": "/services/data/v62.0/tooling/sobjects/EntityDefinition/01IDp000001O3LE"
+      },
+      "DeploymentStatus": "Deployed",
+      "Description": null,
+      "ExternalSharingModel": "Private",
+      "InternalSharingModel": "ReadWrite",
+      "QualifiedApiName": "FSL__Criteria__c"
+    }
+  ]
+}

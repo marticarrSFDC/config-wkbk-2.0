@@ -1,12 +1,19 @@
 {
   "packageDirectories": [
     {
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
       "path": "force-app",
-      "default": true
+      "default": true,
+      "package": "config-wkbk",
+      "versionDescription": "Configuraton Workbook"
     }
   ],
   "name": "cw2.0",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "63.0"
+  "sourceApiVersion": "63.0",
+  "packageAliases": {
+    "config-wkbk": "0HoDp000000k9j3KAA"
+  }
 }

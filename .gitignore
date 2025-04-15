@@ -20,6 +20,8 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.stryker-tmp/
+reports/
 
 # Dependency directories
 node_modules/

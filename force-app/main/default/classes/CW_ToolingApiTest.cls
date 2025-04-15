@@ -1,7 +1,7 @@
 @IsTest
 public class CW_ToolingApiTest {
     @IsTest
-    static void constructor_setUserSessionId() {
+    static void constructorSetUserSessionId() {
         // ACT
         Test.startTest();
         CW_ToolingApi toolingApi = new CW_ToolingApi();
@@ -12,7 +12,7 @@ public class CW_ToolingApiTest {
 	}
 
 	@IsTest
-    static void constructor_givenSessionId_setSame() {
+    static void constructorGivenSessionIdSetsSame() {
         // ACT
         Test.startTest();
         CW_ToolingApi toolingApi = new CW_ToolingApi('SESSION_ID');
@@ -23,22 +23,22 @@ public class CW_ToolingApiTest {
     }
 
     @IsTest
-    static void describeGlobal_givenSuccessfulCallout_returnDescribeGlobalResult() {
+    static void retrieveSObjectsGivenSuccessfulCalloutReturnsDescribeGlobalResult() {
         // ARRANGE
         Test.setMock(HttpCalloutMock.class, new ToolingApiMock());
         CW_ToolingApi toolingApi = new CW_ToolingApi();
 
         // ACT
         Test.startTest();
-        CW_ToolingApi.DescribeGlobalResult describeGlobalResult = toolingApi.describeGlobal();
+        String result = toolingApi.retrieveSObjects();
         Test.stopTest();
 
         // ASSERT
-        System.assertNotEquals(null, describeGlobalResult, 'Response should not be null for a successful callout.');
+        System.assertNotEquals(null, result, 'Response should not be null for a successful callout.');
     }
 
     @IsTest
-    static void describeGlobal_givenUnsuccessfulCallout_throwException() {
+    static void retrieveSObjectsGivenUnsuccessfulCalloutThrowsException() {
         // ARRANGE
         Test.setMock(HttpCalloutMock.class, new ToolingApiMockError());
         CW_ToolingApi toolingApi = new CW_ToolingApi();
@@ -46,22 +46,72 @@ public class CW_ToolingApiTest {
         // ACT
         try {
             Test.startTest();
-            CW_ToolingApi.DescribeGlobalResult describeGlobalResult = toolingApi.describeGlobal();
+            toolingApi.retrieveSObjects();
             Test.stopTest();
             System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
-        } catch (CW_ToolingApi.ToolingAPIException e) {
+        } catch (CW_ToolingApiRest.ToolingAPIException e) {
             // ASSERT
-            System.assertEquals('ERROR_MESSAGE : Something went wrong', e.getMessage(), 'Exception message should match the error message in the mock response.');
+            System.assertEquals('Something went wrong', e.getMessage(), 'Exception message should match the error message in the mock response.');
         }
     }
 
+    @IsTest
+    static void queryGivenSuccessfulCalloutReturnsDescribeGlobalResult() {
+        // ARRANGE
+        Test.setMock(HttpCalloutMock.class, new ToolingApiMock());
+        CW_ToolingApi toolingApi = new CW_ToolingApi();
+
+        // ACT
+        Test.startTest();
+        String result = toolingApi.query('SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true');
+        Test.stopTest();
+
+        // ASSERT
+        System.assertNotEquals(null, result, 'Response should not be null for a successful callout.');
+    }
+
+    @IsTest
+    static void queryGivenUnsuccessfulCalloutThrowsException() {
+        // ARRANGE
+        Test.setMock(HttpCalloutMock.class, new ToolingApiMockError());
+        CW_ToolingApi toolingApi = new CW_ToolingApi();
+
+        // ACT
+        try {
+            Test.startTest();
+            toolingApi.query('SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true');
+            Test.stopTest();
+            System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
+        } catch (CW_ToolingApiRest.ToolingAPIException e) {
+            // ASSERT
+            System.assertEquals('Something went wrong', e.getMessage(), 'Exception message should match the error message in the mock response.');
+        }
+    }
+
+    // Test data for the unit tests
+    private class TestData implements CW_ToolingApiRest.ISerialize {
+        public void serialize(JSONGenerator jsonGen) {
+            jsonGen.writeStringField('key', 'value');
+        }
+    }
+
+    private class InvalidData {
+        // No implementation needed for this invalid data
+    }
+
+    /**
+     * @description Mock class for the Tooling API service
+     */
     private class ToolingApiMock implements HttpCalloutMock {
+        /**
+         * @description Responds to the HTTP request
+         * @param req The HTTP request that is sent to the Tooling API
+         * @return HTTPResponse The HTTP response for the Tooling API request
+         */
         public HTTPResponse respond(HTTPRequest req) {
             HttpResponse res = new HttpResponse();
             Map<String, Object> resBody = new Map<String, Object>();
-            if((req.getEndpoint()).contains('/sobjects')) {
-                resBody.put('response_x', new CW_ToolingApi.DescribeGlobalResult());
-			}
+            resBody.put('response_x', 'response');
             res.setStatusCode(200);
             res.setHeader('Content-Type', 'application/json');
             res.setBody(JSON.serialize(resBody));
@@ -69,13 +119,21 @@ public class CW_ToolingApiTest {
         }
     }
 
+    /**
+     * @description Mock class for the Tooling API service
+     */
     private class ToolingApiMockError implements HttpCalloutMock {
+        /**
+         * @description Responds to the HTTP request
+         * @param req The HTTP request that is sent to the Tooling API
+         * @return HTTPResponse The HTTP response for the Tooling API request
+         */
         public HTTPResponse respond(HTTPRequest req) {
             // Create a dummy error response
             HttpResponse res = new HttpResponse();
             res.setStatusCode(400);
             res.setHeader('Content-Type', 'application/json');
-            res.setBody('[{"errorCode":"ERROR_MESSAGE", "message":"Something went wrong"}]');
+            res.setBody('{"errorCode":"ERROR_MESSAGE", "message":"Something went wrong"}');
             return res;
         }
     }

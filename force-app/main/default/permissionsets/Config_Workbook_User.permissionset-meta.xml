@@ -4,10 +4,6 @@
         <application>Config_Workbook</application>
         <visible>true</visible>
     </applicationVisibilities>
-    <customSettingAccesses>
-        <enabled>true</enabled>
-        <name>Google_Sheets_Credentials__c</name>
-    </customSettingAccesses>
     <description>Adds access for Config Workbook app usage</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Config Workbook User</label>
