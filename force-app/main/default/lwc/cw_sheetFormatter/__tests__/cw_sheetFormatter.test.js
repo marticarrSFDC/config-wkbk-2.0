@@ -1,4 +1,5 @@
 import { SheetFormatter } from 'c/cw_sheetFormatter';
+import { OrgLimitsFormatter } from '.././formatters/orgLimitsFormatter.js';
 import { AllObjectsFormatter } from '.././formatters/allObjectsFormatter.js';
 
 describe('sheet-formatter', () => {
@@ -6,7 +7,7 @@ describe('sheet-formatter', () => {
         jest.restoreAllMocks();
     });
 
-    it('generateSpreadsheet - given allobjects calls AllObjectsFormatter.generateSpreadsheet', () => {
+    it('generateSpreadsheet - calls SheetFormatter.generateSpreadsheet', () => {
         // Arrange
         const type = 'allobjects';
         const spy = jest.spyOn(AllObjectsFormatter.prototype, 'generateSpreadsheet').mockReturnValue({});
@@ -33,6 +34,19 @@ describe('sheet-formatter', () => {
         }
     });
 
+    it('format - given limits calls OrgLimitsFormatter.format', () => {
+        // Arrange
+        const type = 'limits';
+        const spy = jest.spyOn(OrgLimitsFormatter.prototype, 'format').mockReturnValue({});
+
+        // Act
+        const sheet = SheetFormatter.format(type, []);
+
+        // Assert
+        expect(spy).toHaveBeenCalledWith([]);
+        expect(sheet).toEqual({});
+    });
+    
     it('format - given allobjects calls AllObjectsFormatter.format', () => {
         // Arrange
         const type = 'allobjects';

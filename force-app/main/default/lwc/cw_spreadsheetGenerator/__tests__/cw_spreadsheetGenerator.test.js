@@ -77,7 +77,31 @@ describe('spreadsheet-generator', () => {
         expect(populateSheetCallout).not.toHaveBeenCalled();
     });
 
-    it('createSpreadsheet: populateSheetCallout failure - console error', async () => {
+    it('createSpreadsheet - limits: populateSheetCallout failure - console error', async () => {
+        // Arrange
+        const generator = new SpreadsheetGenerator();
+        const processSpy = jest.spyOn(DataProcessor, 'process').mockResolvedValue([]);
+        const generateSpreadsheetSpy = jest.spyOn(SheetFormatter, 'generateSpreadsheet').mockResolvedValue({});
+        const formatSpy = jest.spyOn(SheetFormatter, 'format').mockResolvedValue([]);
+        const consoleSpy = jest.spyOn(console, 'error');
+
+        createGoogleSpreadsheet.mockResolvedValue(JSON.stringify({spreadsheetId: '111'}));
+        populateSheetCallout.mockRejectedValue('error');
+
+        // Act
+        generator.createSpreadsheet(['limits']);
+        await flushPromises();
+        await flushPromises();
+
+        // Assert
+        expect(generateSpreadsheetSpy).toHaveBeenCalled();
+        expect(createGoogleSpreadsheet).toHaveBeenCalledWith({jsonString: JSON.stringify({})});
+        expect(processSpy).toHaveBeenCalledWith('limits');
+        expect(formatSpy).toHaveBeenCalledWith('limits', []);
+        expect(consoleSpy).toHaveBeenCalledWith('Error populating Google Sheet: ', 'error');
+    });
+
+    it('createSpreadsheet - allobjects: populateSheetCallout failure - console error', async () => {
         // Arrange
         const generator = new SpreadsheetGenerator();
         const processSpy = jest.spyOn(DataProcessor, 'process').mockResolvedValue([]);
