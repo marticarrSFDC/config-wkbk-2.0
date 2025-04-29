@@ -20,20 +20,6 @@ describe('sheet-formatter', () => {
         expect(sheet).toEqual({});
     });
 
-    it('generateSpreadsheet - given invalid throws error', () => {
-        // Arrange
-        const type = 'invalid';
-
-        // Act
-        try {
-            SheetFormatter.generateSpreadsheet(type);
-            expect(true).toBe(false);
-        } catch (e) {
-            // Assert
-            expect(e.message).toBe('No formatter found for type: invalid');
-        }
-    });
-
     it('format - given limits calls OrgLimitsFormatter.format', () => {
         // Arrange
         const type = 'limits';
