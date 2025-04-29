@@ -1,3 +1,4 @@
+import { LimitsProcessor } from './processors/limitsProcessor.js';
 import { ObjectsProcessor } from './processors/objectsProcessor.js';
 
 class DataProcessor {
@@ -8,7 +9,10 @@ class DataProcessor {
 	}
 
 	static _getProcessor(type) {
+		console.log('get processor for type:', type);
 		switch (type) {
+			case 'limits':
+				return new LimitsProcessor();
 			case 'allobjects':
 				return new ObjectsProcessor();
 			default:

@@ -4,12 +4,9 @@ import { SpreadsheetGenerator } from 'c/cw_spreadsheetGenerator';
 
 jest.mock(
   "@salesforce/apex/CW_ToolingApiService.getMetadataCallout", 
-  () => {
-    const { createApexTestWireAdapter } = require("@salesforce/sfdx-lwc-jest");
-      return {
-          default: createApexTestWireAdapter(jest.fn())
-      };
-  },
+  () => ({
+      default: jest.fn()
+  }),
   { virtual: true }
 );
 

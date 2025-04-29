@@ -3,6 +3,16 @@
  **/
 public with sharing class CW_ToolingApiService {
     /**
+	 * @description Get org limits metadata
+     * @return JSON string of the metadata
+	 **/
+    @AuraEnabled(cacheable=false)
+    public static String getOrgLimits() {
+        CW_ToolingApi tooling = new CW_ToolingApi();
+        return tooling.retrieveOrgLimits();
+    }
+    
+    /**
 	 * @description Get sobject metadata
      * @return JSON string of the metadata
 	 **/

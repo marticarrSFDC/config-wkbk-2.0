@@ -147,7 +147,7 @@ jobs:
             echo "📊 Org-wide coverage: $avg%"
 
             # Set your desired minimum here (e.g., 75%)
-            threshold=75
+            threshold=85
             if (( $(echo "$avg < $threshold" | bc -l) )); then
               echo "❌ Code coverage below ${threshold}%!"
               exit 1
