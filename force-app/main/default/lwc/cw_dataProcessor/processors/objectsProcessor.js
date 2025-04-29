@@ -49,19 +49,19 @@ class ObjectsProcessor {
 	}
 
 	_populateAllObjectSheet() {
-			return Promise.allSettled([getSObjects(), query({query: ENTITY_QUERY})])
-				.then(results => {
-					const [sobjects, entities] = results;
-					if (sobjects.status === 'fulfilled' && entities.status === 'fulfilled') {
-						return {
-							sobjectMetadata: sobjects.value, 
-							entityMetadata: entities.value
-						};
-					}
-					
-					throw new Error('Error retrieving metadata: ' + (sobjects.reason || entities.reason));
-				});
-		}
+		return Promise.allSettled([getSObjects(), query({query: ENTITY_QUERY})])
+			.then(results => {
+				const [sobjects, entities] = results;
+				if (sobjects.status === 'fulfilled' && entities.status === 'fulfilled') {
+					return {
+						sobjectMetadata: sobjects.value, 
+						entityMetadata: entities.value
+					};
+				}
+				
+				throw new Error('Error retrieving metadata: ' + (sobjects.reason || entities.reason));
+			});
+	}
 	
 	
 	async buildTable() {

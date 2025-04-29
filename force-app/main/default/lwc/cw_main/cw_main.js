@@ -6,6 +6,6 @@ const generator = new SpreadsheetGenerator();
 
 export default class Cw_main extends NavigationMixin(LightningElement) {
   handleClick() {
-    generator.createSpreadsheet(['allobjects']);
+    generator.createSpreadsheet(['limits', 'allobjects']);
   }
 }

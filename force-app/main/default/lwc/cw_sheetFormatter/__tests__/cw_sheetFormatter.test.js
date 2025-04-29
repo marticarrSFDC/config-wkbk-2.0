@@ -1,4 +1,5 @@
 import { SheetFormatter } from 'c/cw_sheetFormatter';
+import { OrgLimitsFormatter } from '.././formatters/orgLimitsFormatter.js';
 import { AllObjectsFormatter } from '.././formatters/allObjectsFormatter.js';
 
 describe('sheet-formatter', () => {
@@ -6,10 +7,10 @@ describe('sheet-formatter', () => {
         jest.restoreAllMocks();
     });
 
-    it('generateSpreadsheet - given allobjects calls AllObjectsFormatter.generateSpreadsheet', () => {
+    it('generateSpreadsheet - calls SheetFormatter.generateSpreadsheet', () => {
         // Arrange
         const type = 'allobjects';
-        const spy = jest.spyOn(AllObjectsFormatter.prototype, 'generateSpreadsheet').mockReturnValue({});
+        const spy = jest.spyOn(SheetFormatter, 'generateSpreadsheet').mockReturnValue({});
 
         // Act
         const sheet = SheetFormatter.generateSpreadsheet(type);
@@ -19,20 +20,19 @@ describe('sheet-formatter', () => {
         expect(sheet).toEqual({});
     });
 
-    it('generateSpreadsheet - given invalid throws error', () => {
+    it('format - given limits calls OrgLimitsFormatter.format', () => {
         // Arrange
-        const type = 'invalid';
+        const type = 'limits';
+        const spy = jest.spyOn(OrgLimitsFormatter.prototype, 'format').mockReturnValue({});
 
         // Act
-        try {
-            SheetFormatter.generateSpreadsheet(type);
-            expect(true).toBe(false);
-        } catch (e) {
-            // Assert
-            expect(e.message).toBe('No formatter found for type: invalid');
-        }
-    });
+        const sheet = SheetFormatter.format(type, []);
 
+        // Assert
+        expect(spy).toHaveBeenCalledWith([]);
+        expect(sheet).toEqual({});
+    });
+    
     it('format - given allobjects calls AllObjectsFormatter.format', () => {
         // Arrange
         const type = 'allobjects';

@@ -57,9 +57,18 @@ public with sharing class CW_ToolingApi {
     public String query(String query) {
         return submitRestCallAndDeserialize(CW_Constants.TOOLING_API_URI + '/query?q=' + query);
     }
+
+	/**
+     * @description Describes status of org limits via metadata api.  This is the equivalent of calling ///instance/services/v62.0/limits via the Tooling REST API.
+	 * @return String responseBody
+     * @throws ToolingAPIException if an an exception was encountered.
+     */
+    public String retrieveOrgLimits() {
+        return submitRestCallAndDeserialize(CW_Constants.API_URI + '/limits');
+    }
 	
 	/**
-     * @description Describes all the sobjects via the tooling api.  This is the equivalent of calling //instance/api/tooling/sobjects via the Tooling REST API.
+     * @description Describes all the sobjects via the metadata api.  This is the equivalent of calling //instance/services/v62.0/sobjects via the Tooling REST API.
 	 * @return String responseBody
      * @throws ToolingAPIException if an an exception was encountered.
      */

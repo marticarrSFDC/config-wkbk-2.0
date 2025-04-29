@@ -1,7 +1,20 @@
 import { DataProcessor } from 'c/cw_dataProcessor';
+import { LimitsProcessor } from '.././processors/limitsProcessor.js';
 import { ObjectsProcessor } from '.././processors/objectsProcessor.js';
 
 describe('data-processor', () => {
+    
+    it('processor - given limits calls LimitsProcessor.buildTable', async () => {
+        // Arrange
+        const type = 'limits';
+        const spy = jest.spyOn(LimitsProcessor.prototype, 'buildTable').mockResolvedValue([]);
+
+        // Act
+        await DataProcessor.process(type);
+
+        // Assert
+        expect(spy).toHaveBeenCalled();
+    });
     
     it('processor - given allobjects calls ObjectProcessor.buildTable', async () => {
         // Arrange

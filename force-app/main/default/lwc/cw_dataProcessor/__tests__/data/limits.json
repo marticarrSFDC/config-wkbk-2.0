@@ -1,0 +1,5 @@
+{
+  "ActiveScratchOrgs": { "Max": 10, "Remaining": 5 },
+  "AnalyticsExternalDataSizeMB": { "Max": 40960, "Remaining": 40960 },
+  "CdpAiInferenceApiMonthlyLimit": { "Max": 0, "Remaining": 0 }
+}

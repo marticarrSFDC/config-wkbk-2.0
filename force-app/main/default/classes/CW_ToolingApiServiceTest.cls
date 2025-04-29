@@ -26,6 +26,32 @@ private class CW_ToolingApiServiceTest {
         System.Assert.isTrue(ex != null, 'A CW_ToolingApi.ToolingAPIException should have been thrown');
     }
 
+    @IsTest
+    static void getOrgLimitsCalloutTest() {
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMock());
+        String response = CW_ToolingApiService.getOrgLimits();
+        Test.stopTest();
+
+        System.assert(String.isNotBlank(response), 'The response should have value');
+    }
+
+    @IsTest
+    static void getOrgLimitsCalloutNegativeTest() {
+        CW_ToolingApiRest.ToolingAPIException ex;
+        try {
+            Test.startTest();
+            Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMockNegative());
+            CW_ToolingApiService.getOrgLimits();
+            Test.stopTest();
+            System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
+        } catch(CW_ToolingApiRest.ToolingAPIException receivedEx) {
+            ex = receivedEx;
+        }
+        
+        System.Assert.isTrue(ex != null, 'A CW_ToolingApi.ToolingAPIException should have been thrown');
+    }
+
     static void queryCalloutTest() {
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new CW_ToolingApiServiceMock());
