@@ -10,7 +10,7 @@ describe('sheet-formatter', () => {
     it('generateSpreadsheet - calls SheetFormatter.generateSpreadsheet', () => {
         // Arrange
         const type = 'allobjects';
-        const spy = jest.spyOn(AllObjectsFormatter.prototype, 'generateSpreadsheet').mockReturnValue({});
+        const spy = jest.spyOn(SheetFormatter.prototype, 'generateSpreadsheet').mockReturnValue({});
 
         // Act
         const sheet = SheetFormatter.generateSpreadsheet(type);

@@ -123,6 +123,10 @@ public class CW_ToolingApiTest {
 
     // Test data for the unit tests
     private class TestData implements CW_ToolingApiRest.ISerialize {
+        /**
+         * @description Serializes the object to JSON format
+         * @param jsonGen The JSON generator used for serialization
+         */
         public void serialize(JSONGenerator jsonGen) {
             jsonGen.writeStringField('key', 'value');
         }
