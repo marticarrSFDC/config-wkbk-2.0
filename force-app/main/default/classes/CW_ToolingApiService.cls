@@ -11,6 +11,16 @@ public with sharing class CW_ToolingApiService {
         CW_ToolingApi tooling = new CW_ToolingApi();
         return tooling.retrieveOrgLimits();
     }
+
+    /**
+     * @description Get approval processes metadata
+     * @return JSON string of the metadata
+     */
+    @AuraEnabled(cacheable=false)
+    public static String getApprovalProcesses() {
+        CW_ToolingApi tooling = new CW_ToolingApi();
+        return tooling.retrieveApprovalProcesses();
+    }
     
     /**
 	 * @description Get sobject metadata

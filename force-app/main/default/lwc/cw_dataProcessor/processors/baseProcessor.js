@@ -1,0 +1,20 @@
+class BaseProcessor {
+	_populateSheet(callouts) {
+		return Promise.allSettled(callouts)
+			.then(results => {
+				let data = [];
+				results.forEach(result => {
+					if (result.status === 'fulfilled') {
+						data.push(JSON.parse(result.value));
+					} else {
+						console.error('Error retrieving metadata: ', result.reason);
+					}
+				});	
+				return data;			
+			});
+	}
+}
+
+export {
+	BaseProcessor
+}

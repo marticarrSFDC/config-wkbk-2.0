@@ -1,47 +1,26 @@
-const ALL_OBJECTS_ID = 222;
-const COLUMN_WIDTHS = [250, 250, 150, 75, 75, 125, 125, 300, 125];
+import { BaseFormatter } from './baseFormatter.js';
 
-class AllObjectsFormatter {
+const SHEET_CONFIG = {
+	sheetId: 333,
+	title: 'All Objects',
+	columnWidths: [250, 250, 150, 75, 75, 125, 125, 300, 125],
+	mergeRanges: [
+		{ startRowIndex: 0, endRowIndex: 1, startColumnIndex: 5, endColumnIndex: 7 }
+	]
+};
+
+class AllObjectsFormatter extends BaseFormatter {
 	format(tableData) {
 		let body = {
-			requests: [
-				this._buildAddSheetRequest(tableData),
-				this._buildMergeRequest(tableData),
-				this._buildTableDataRequest(tableData)
-			]
+			requests: []
 		};
-		body.requests.push(...this._buildColumnRequests());
+
+		body.requests.push(this._buildAddSheetRequest(SHEET_CONFIG, tableData));
+		body.requests.push(...this._buildMergeRequests(SHEET_CONFIG));
+		body.requests.push(this._buildUpdatePropertiesRequest(SHEET_CONFIG, tableData));
+		body.requests.push(this._buildTableDataRequest(tableData));
+		body.requests.push(...this._buildColumnRequests(SHEET_CONFIG));
 		return body;
-	}
-
-	_buildAddSheetRequest(tableData) {
-		return {
-			addSheet: {
-				properties: {
-					sheetId: ALL_OBJECTS_ID,
-					title: 'All Objects',
-					gridProperties: {
-						rowCount: tableData.length,
-						columnCount: tableData[0].length,
-					}
-				}
-			},
-		};
-	}
-
-	_buildMergeRequest() {
-		return {
-			mergeCells: {
-				range: {
-					sheetId: ALL_OBJECTS_ID,
-					startRowIndex: 0,
-					endRowIndex: 1,
-					startColumnIndex: 5,
-					endColumnIndex: 7
-				},
-				mergeType: "MERGE_ALL"
-			}
-		}
 	}
 
 	_buildTableDataRequest(tableData) {
@@ -50,7 +29,7 @@ class AllObjectsFormatter {
 				rows: [],
 				fields: '*',
 				start: {
-					sheetId: ALL_OBJECTS_ID,
+					sheetId: SHEET_CONFIG.sheetId,
 					rowIndex: 0,
 					columnIndex: 0
 				}
@@ -65,64 +44,21 @@ class AllObjectsFormatter {
 
 	_buildTableRow(tr, i) {
 		let row;
-		if(i === 0) { // table header
+		if(i <= 1) { // table header
 			row = {
 				values: tr.map((td) => {
-					return {
-						userEnteredValue: { stringValue: td },
-						userEnteredFormat: {
-							textFormat: {
-								bold: true
-							},
-							backgroundColor: { red: 0.953, green: 0.953, blue: 0.953 },
-							horizontalAlignment: "CENTER"
-						}
-					};
-				})
-			}
-		}
-		else if(i === 1) { // table header
-			row = {
-				values: tr.map((td) => {
-					return {
-						userEnteredValue: { stringValue: td },
-						userEnteredFormat: {
-							textFormat: {
-								bold: true
-							},
-							backgroundColor: { red: 0.953, green: 0.953, blue: 0.953 },
-						}
-					};
+					return this._buildHeaderCell(td);
 				})
 			}
 		}
 		else {
 			row = {
 				values: tr.map((td) => {
-					return {
-						userEnteredValue: { stringValue: td }
-					};
+					return this._buildStringCell(td);
 				})
 			}
 		}
 		return row;
-	}
-
-	_buildColumnRequests() {
-		return COLUMN_WIDTHS.map((width, index) => ({
-			updateDimensionProperties: {
-				range: {
-					sheetId: ALL_OBJECTS_ID,
-					dimension: "COLUMNS",
-					startIndex: index,
-					endIndex: index + 1
-				},
-				properties: {
-					pixelSize: width
-				},
-				fields: "pixelSize"
-			}
-		}));
 	}
 }
 

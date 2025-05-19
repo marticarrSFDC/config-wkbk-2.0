@@ -1,3 +1,4 @@
+import { BaseProcessor } from "./baseProcessor";
 import getSObjects from "@salesforce/apex/CW_ToolingApiService.getSObjects";
 import query from "@salesforce/apex/CW_ToolingApiService.query";
 
@@ -5,7 +6,7 @@ const ENTITY_QUERY = 'SELECT+DeploymentStatus,Description,ExternalSharingModel,I
 const HEADER_1 = ['', '', '', '', '', 'Organization-Wide Defaults', '', '', ''];
 const HEADER_2 = ['Object Label', 'API Name', 'Type', 'Key Prefix', 'In Use?', 'Internal', 'External', 'Description', 'Deployment Status'];
 
-class ObjectsProcessor {
+class ObjectsProcessor extends BaseProcessor {
 	_formatObjectType(sobject) {
 		if(sobject.customSetting) {
 			return 'Custom Setting';
@@ -16,7 +17,7 @@ class ObjectsProcessor {
 	}
 	
 	_processSObjectData(metadata) {
-		const sobjects = JSON.parse(metadata).sobjects;
+		const sobjects = metadata.sobjects;
 	
 		let data = new Map();
 		sobjects.forEach((sobject) => {
@@ -33,7 +34,7 @@ class ObjectsProcessor {
 	}
 	
 	_processEntityData(metadata) {
-		const entities = JSON.parse(metadata).records;
+		const entities = metadata.records;
 	
 		let data = new Map();
 		entities.forEach((entity) => {
@@ -49,25 +50,14 @@ class ObjectsProcessor {
 	}
 
 	_populateAllObjectSheet() {
-		return Promise.allSettled([getSObjects(), query({query: ENTITY_QUERY})])
-			.then(results => {
-				const [sobjects, entities] = results;
-				if (sobjects.status === 'fulfilled' && entities.status === 'fulfilled') {
-					return {
-						sobjectMetadata: sobjects.value, 
-						entityMetadata: entities.value
-					};
-				}
-				
-				throw new Error('Error retrieving metadata: ' + (sobjects.reason || entities.reason));
-			});
+		return this._populateSheet([getSObjects(), query({query: ENTITY_QUERY})]);
 	}
 	
 	
 	async buildTable() {
-		const metadata = await this._populateAllObjectSheet();
-		const sobjects = this._processSObjectData(metadata.sobjectMetadata);
-		const entities = this._processEntityData(metadata.entityMetadata);
+		const [sobj, ent] = await this._populateAllObjectSheet();
+		const sobjects = this._processSObjectData(sobj);
+		const entities = this._processEntityData(ent);
 		const apiNames = Array.from(sobjects.keys());
 		apiNames.sort();
 	

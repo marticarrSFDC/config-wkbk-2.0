@@ -1,31 +1,25 @@
 import { BaseFormatter } from './baseFormatter.js';
 
 const SHEET_CONFIG = {
-	sheetId: 111,
-	title: 'Org Limits',
-	columnWidths: [350, 60, 125, 125],
+	sheetId: 222,
+	title: 'Approval Processes',
+	columnWidths: [175, 250, 75, 450],
 	mergeRanges: [
 		{ startRowIndex: 0, endRowIndex: 1, startColumnIndex: 0, endColumnIndex: 4 }
 	]
 };
 
-class OrgLimitsFormatter extends BaseFormatter {
+class ApprovalsFormatter extends BaseFormatter {
 	format(tableData) {
 		let body = {
 			requests: []
 		};
 
-		console.log(1);
 		body.requests.push(this._buildAddSheetRequest(SHEET_CONFIG, tableData));
-		console.log(2);
 		body.requests.push(...this._buildMergeRequests(SHEET_CONFIG));
-		console.log(3);
 		body.requests.push(this._buildUpdatePropertiesRequest(SHEET_CONFIG, tableData));
-		console.log(4);
 		body.requests.push(this._buildTableDataRequest(tableData));
-		console.log(5);
 		body.requests.push(...this._buildColumnRequests(SHEET_CONFIG));
-		console.log(6);
 		return body;
 	}
 
@@ -51,28 +45,27 @@ class OrgLimitsFormatter extends BaseFormatter {
 	_buildTableRow(tr, i) {
 		let row;
 		if(i <= 1) { // table header
+			console.log('header:', i);
 			row = {
 				values: tr.map((td) => {
-					return this._buildHeaderCell(td)
+					return this._buildHeaderCell(td);
 				})
 			}
-		}
-		else {
+		} else {
 			row = {
 				values: tr.map((td, index) => {
-					if(index === 0) { // limit label
-						return this._buildStringCell(td);
-					} else if(index === 1) { // limit percent used
-						return this._buildPercentCell(td);
+					if(index === 2) { // order
+						return this._buildNumberCell(td);
 					}
-					return this._buildNumberCell(td);
+					return this._buildStringCell(td);
 				})
 			}
 		}
+		
 		return row;
 	}
 }
 
 export {
-	OrgLimitsFormatter
+	ApprovalsFormatter
 }
