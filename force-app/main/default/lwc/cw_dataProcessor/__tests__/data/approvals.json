@@ -1,0 +1,29 @@
+{
+	"approvals": {
+		"Knowledge__kav": [
+			{
+				"description": "What: Approval Process for Knowledge Articles.",
+				"id": "04aDp000000cQYK",
+				"name": "Knowledge Approval",
+				"object": "Knowledge__kav",
+				"sortOrder": 1
+			}
+		],
+		"cgcloud__User_Document__c": [
+			{
+				"description": null,
+				"id": "04aDp000000cQYb",
+				"name": "Daily Report Approval Direct",
+				"object": "cgcloud__User_Document__c",
+				"sortOrder": 1
+			},
+			{
+				"description": null,
+				"id": "04aDp000000cQYc",
+				"name": "User Document Approval",
+				"object": "cgcloud__User_Document__c",
+				"sortOrder": 2
+			}
+		]
+	}
+}

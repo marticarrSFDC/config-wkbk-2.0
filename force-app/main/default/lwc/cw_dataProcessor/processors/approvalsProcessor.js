@@ -11,7 +11,7 @@ class ApprovalsProcessor extends BaseProcessor {
 
 	async buildTable() {
 		const [metadata] = await this._populateApprovalProcessesSheet();
-		const approvals = metadata.approvals;
+		const approvals = metadata?.approvals || {};
 	
 		let data = [HEADER_1, HEADER_2];
 		for(const object in approvals) {

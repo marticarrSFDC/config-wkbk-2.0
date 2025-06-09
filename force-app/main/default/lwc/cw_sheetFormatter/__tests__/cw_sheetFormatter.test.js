@@ -1,5 +1,6 @@
 import { SheetFormatter } from 'c/cw_sheetFormatter';
 import { OrgLimitsFormatter } from '.././formatters/orgLimitsFormatter.js';
+import { ApprovalsFormatter } from '.././formatters/approvalsFormatter.js';
 import { AllObjectsFormatter } from '.././formatters/allObjectsFormatter.js';
 
 describe('sheet-formatter', () => {
@@ -24,6 +25,19 @@ describe('sheet-formatter', () => {
         // Arrange
         const type = 'limits';
         const spy = jest.spyOn(OrgLimitsFormatter.prototype, 'format').mockReturnValue({});
+
+        // Act
+        const sheet = SheetFormatter.format(type, []);
+
+        // Assert
+        expect(spy).toHaveBeenCalledWith([]);
+        expect(sheet).toEqual({});
+    });
+
+    it('format - given approvals calls ApprovalsFormatter.format', () => {
+        // Arrange
+        const type = 'approvals';
+        const spy = jest.spyOn(ApprovalsFormatter.prototype, 'format').mockReturnValue({});
 
         // Act
         const sheet = SheetFormatter.format(type, []);
