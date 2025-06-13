@@ -45,7 +45,6 @@ class ApprovalsFormatter extends BaseFormatter {
 	_buildTableRow(tr, i) {
 		let row;
 		if(i <= 1) { // table header
-			console.log('header:', i);
 			row = {
 				values: tr.map((td) => {
 					return this._buildHeaderCell(td);

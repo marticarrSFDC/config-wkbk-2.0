@@ -39,7 +39,6 @@ describe('approvals-formatter', () => {
         const body = approvalsFormatter.format(tableData);
 
         // Assert
-		console.log('body:', JSON.stringify(body, null, 2));
         expect(body.requests.length).toBe(8);
 
 		expect(body.requests[0].addSheet).toBeDefined();

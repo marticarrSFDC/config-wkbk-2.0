@@ -15,7 +15,6 @@ class BaseFormatter {
 	}
 
 	_buildMergeRequests(sheetConfig) {
-		console.log('build merge requests:', sheetConfig.mergeRanges);
 		return sheetConfig.mergeRanges.map((mergeRange) => ({
 			mergeCells: {
 				range: {

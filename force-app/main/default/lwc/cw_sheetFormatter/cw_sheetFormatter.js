@@ -17,7 +17,6 @@ class SheetFormatter {
 	}
 
 	static _getFormatter(type) {
-		console.log('get formatter for type:', type);
 		switch (type) {
 			case 'limits':
 				return new OrgLimitsFormatter();

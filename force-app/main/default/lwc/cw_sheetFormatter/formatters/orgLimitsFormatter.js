@@ -15,17 +15,11 @@ class OrgLimitsFormatter extends BaseFormatter {
 			requests: []
 		};
 
-		console.log(1);
 		body.requests.push(this._buildAddSheetRequest(SHEET_CONFIG, tableData));
-		console.log(2);
 		body.requests.push(...this._buildMergeRequests(SHEET_CONFIG));
-		console.log(3);
 		body.requests.push(this._buildUpdatePropertiesRequest(SHEET_CONFIG, tableData));
-		console.log(4);
 		body.requests.push(this._buildTableDataRequest(tableData));
-		console.log(5);
 		body.requests.push(...this._buildColumnRequests(SHEET_CONFIG));
-		console.log(6);
 		return body;
 	}
 
