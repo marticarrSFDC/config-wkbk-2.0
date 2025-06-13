@@ -7,7 +7,7 @@ class BaseProcessor {
 					if (result.status === 'fulfilled') {
 						data.push(JSON.parse(result.value));
 					} else {
-						console.error('Error retrieving metadata: ', result.reason);
+						throw new Error(`Error retrieving metadata: ${result.reason}`);
 					}
 				});	
 				return data;			

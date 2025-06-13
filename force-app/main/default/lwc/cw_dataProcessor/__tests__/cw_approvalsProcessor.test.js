@@ -13,7 +13,7 @@ jest.mock(
 	{ virtual: true }
 );
 
-describe('limit-processor', () => {
+describe('approvals-processor', () => {
 	afterEach(() => {
         jest.clearAllMocks();      // clears call history
         jest.resetAllMocks();      // resets .mockResolvedValue, .mockRejectedValue, etc.
