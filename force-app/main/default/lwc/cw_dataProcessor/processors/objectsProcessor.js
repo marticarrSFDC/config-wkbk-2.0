@@ -3,10 +3,16 @@ import getSObjects from "@salesforce/apex/CW_ToolingApiService.getSObjects";
 import query from "@salesforce/apex/CW_ToolingApiService.query";
 
 const ENTITY_QUERY = 'SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true';
-const HEADER_1 = ['', '', '', '', '', 'Organization-Wide Defaults', '', '', ''];
-const HEADER_2 = ['Object Label', 'API Name', 'Type', 'Key Prefix', 'In Use?', 'Internal', 'External', 'Description', 'Deployment Status'];
 
 class ObjectsProcessor extends BaseProcessor {
+	get HEADER_1() {
+		return ['', '', '', '', '', 'Organization-Wide Defaults', '', '', ''];
+	}
+
+	get HEADER_2() {
+		return ['Object Label', 'API Name', 'Type', 'Key Prefix', 'In Use?', 'Internal', 'External', 'Description', 'Deployment Status'];
+	}
+
 	_formatObjectType(sobject) {
 		if(sobject.customSetting) {
 			return 'Custom Setting';
@@ -61,7 +67,7 @@ class ObjectsProcessor extends BaseProcessor {
 		const apiNames = Array.from(sobjects.keys());
 		apiNames.sort();
 	
-		let data = [HEADER_1, HEADER_2];
+		let data = [this.HEADER_1, this.HEADER_2];
 		apiNames.forEach((apiName) => {
 			const sobject = sobjects.get(apiName);
 			const entity = entities.get(apiName);

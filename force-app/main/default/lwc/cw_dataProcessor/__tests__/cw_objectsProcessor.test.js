@@ -29,6 +29,13 @@ describe('object-processor', () => {
         jest.clearAllMocks();      // clears call history
         jest.resetAllMocks();      // resets .mockResolvedValue, .mockRejectedValue, etc.
     });
+
+	it('constructor', () => {
+        const processor = new ObjectsProcessor();
+        expect(processor).toBeInstanceOf(ObjectsProcessor);
+		expect(processor.HEADER_1).toEqual(['', '', '', '', '', 'Organization-Wide Defaults', '', '', '']);
+		expect(processor.HEADER_2).toEqual(['Object Label', 'API Name', 'Type', 'Key Prefix', 'In Use?', 'Internal', 'External', 'Description', 'Deployment Status']);
+    });
 	
 	it('buildTable - process successful responses', async () => {
 		// Arrange

@@ -1,10 +1,15 @@
 import { BaseProcessor } from "./baseProcessor";
 import getOrgLimits from "@salesforce/apex/CW_ToolingApiService.getOrgLimits";
 
-const HEADER_1 = ['Org Health', '', '', ''];
-const HEADER_2 = ['Limit', '% Used', 'Remaining', 'Maximum'];
-
 class LimitsProcessor extends BaseProcessor {
+	get HEADER_1() {
+		return ['Org Health', '', '', ''];
+	}
+
+	get HEADER_2() {
+		return ['Limit', '% Used', 'Remaining', 'Maximum'];
+	}
+
 	_populateOrgLimitsSheet() {
 		return this._populateSheet([getOrgLimits()]);
 	}
@@ -12,7 +17,7 @@ class LimitsProcessor extends BaseProcessor {
 	async buildTable() {
 		const [limits] = await this._populateOrgLimitsSheet();
 	
-		let data = [HEADER_1, HEADER_2];
+		let data = [this.HEADER_1, this.HEADER_2];
 		for(const limit in limits) {
 			if (Object.hasOwn(limits, limit)) {
 				const name = limit;

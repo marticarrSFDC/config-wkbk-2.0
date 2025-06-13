@@ -1,10 +1,15 @@
 import { BaseProcessor } from "./baseProcessor";
 import getApprovalProcesses from "@salesforce/apex/CW_ToolingApiService.getApprovalProcesses";
 
-const HEADER_1 = ['Approval Processes', '', '', ''];
-const HEADER_2 = ['Object Name', 'Name', 'Order', 'Description'];
-
 class ApprovalsProcessor extends BaseProcessor {
+	get HEADER_1() {
+		return ['Approval Processes', '', '', ''];
+	}
+
+	get HEADER_2() {
+		return ['Object Name', 'Name', 'Order', 'Description'];
+	}
+
 	async _populateApprovalProcessesSheet() {
 		return this._populateSheet([getApprovalProcesses()]);
 	}
@@ -13,7 +18,7 @@ class ApprovalsProcessor extends BaseProcessor {
 		const [metadata] = await this._populateApprovalProcessesSheet();
 		const approvals = metadata.approvals;
 	
-		let data = [HEADER_1, HEADER_2];
+		let data = [this.HEADER_1, this.HEADER_2];
 		for(const object in approvals) {
 			if (Object.hasOwn(approvals, object)) {
 				approvals[object].forEach(approval => {

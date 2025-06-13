@@ -18,6 +18,13 @@ describe('limit-processor', () => {
         jest.clearAllMocks();      // clears call history
         jest.resetAllMocks();      // resets .mockResolvedValue, .mockRejectedValue, etc.
     });
+
+	it('constructor', () => {
+        const processor = new LimitsProcessor();
+        expect(processor).toBeInstanceOf(LimitsProcessor);
+		expect(processor.HEADER_1).toEqual(['Org Health', '', '', '']);
+		expect(processor.HEADER_2).toEqual(['Limit', '% Used', 'Remaining', 'Maximum']);
+    });
 	
 	it('buildTable - process successful responses', async () => {
 		// Arrange

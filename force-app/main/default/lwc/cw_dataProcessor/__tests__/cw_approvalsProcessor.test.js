@@ -18,6 +18,13 @@ describe('approvals-processor', () => {
         jest.clearAllMocks();      // clears call history
         jest.resetAllMocks();      // resets .mockResolvedValue, .mockRejectedValue, etc.
     });
+
+	it('constructor', () => {
+        const processor = new ApprovalsProcessor();
+        expect(processor).toBeInstanceOf(ApprovalsProcessor);
+		expect(processor.HEADER_1).toEqual(['Approval Processes', '', '', '']);
+		expect(processor.HEADER_2).toEqual(['Object Name', 'Name', 'Order', 'Description']);
+    });
 	
 	it('buildTable - process successful responses', async () => {
 		// Arrange
