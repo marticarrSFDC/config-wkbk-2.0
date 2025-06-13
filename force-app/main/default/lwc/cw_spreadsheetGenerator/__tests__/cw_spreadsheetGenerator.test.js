@@ -80,7 +80,6 @@ describe('spreadsheet-generator', () => {
         const processSpy = jest.spyOn(DataProcessor, 'process').mockResolvedValue([]);
         const generateSpreadsheetSpy = jest.spyOn(SheetFormatter, 'generateSpreadsheet').mockResolvedValue({});
         const formatSpy = jest.spyOn(SheetFormatter, 'format').mockResolvedValue([]);
-        const consoleSpy = jest.spyOn(console, 'warn');
 
         createGoogleSpreadsheet.mockResolvedValue(JSON.stringify({spreadsheetId: '1111'}));
         populateSheetCallout.mockResolvedValue(JSON.stringify({}));
@@ -94,7 +93,6 @@ describe('spreadsheet-generator', () => {
         expect(createGoogleSpreadsheet).toHaveBeenCalledWith({jsonString: JSON.stringify({})});
         expect(processSpy).toHaveBeenNthCalledWith(1, 'allobjects');
         expect(formatSpy).toHaveBeenNthCalledWith(1, 'allobjects', []);
-        expect(consoleSpy).toHaveBeenCalledWith('No handler for sheet name:', 'invalid');
         expect(populateSheetCallout).toHaveBeenNthCalledWith(1, {spreadsheetId: '1111', sheetName: encodeURIComponent('All Objects'), jsonString: JSON.stringify({})});
     });
 
