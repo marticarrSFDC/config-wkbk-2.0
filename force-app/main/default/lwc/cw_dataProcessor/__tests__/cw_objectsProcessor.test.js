@@ -31,7 +31,10 @@ describe('object-processor', () => {
     });
 
 	it('constructor', () => {
+		// Act
         const processor = new ObjectsProcessor();
+
+		// Assert
         expect(processor).toBeInstanceOf(ObjectsProcessor);
 		expect(processor.HEADER_1).toEqual(['', '', '', '', '', 'Organization-Wide Defaults', '', '', '']);
 		expect(processor.HEADER_2).toEqual(['Object Label', 'API Name', 'Type', 'Key Prefix', 'In Use?', 'Internal', 'External', 'Description', 'Deployment Status']);

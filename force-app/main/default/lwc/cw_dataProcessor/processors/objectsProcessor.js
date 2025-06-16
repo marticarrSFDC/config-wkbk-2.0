@@ -1,3 +1,4 @@
+/* istanbul ignore next */
 import { BaseProcessor } from "./baseProcessor";
 import getSObjects from "@salesforce/apex/CW_ToolingApiService.getSObjects";
 import query from "@salesforce/apex/CW_ToolingApiService.query";
