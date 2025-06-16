@@ -1,11 +1,10 @@
-/* istanbul ignore next */
 import { BaseProcessor } from "./baseProcessor";
 import getSObjects from "@salesforce/apex/CW_ToolingApiService.getSObjects";
 import query from "@salesforce/apex/CW_ToolingApiService.query";
 
 const ENTITY_QUERY = 'SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true';
 
-class ObjectsProcessor extends BaseProcessor {
+class ObjectsProcessor {
 	get HEADER_1() {
 		return ['', '', '', '', '', 'Organization-Wide Defaults', '', '', ''];
 	}
@@ -57,7 +56,7 @@ class ObjectsProcessor extends BaseProcessor {
 	}
 
 	_populateAllObjectSheet() {
-		return this._populateSheet([getSObjects(), query({query: ENTITY_QUERY})]);
+		return BaseProcessor._populateSheet([getSObjects(), query({query: ENTITY_QUERY})]);
 	}
 	
 	

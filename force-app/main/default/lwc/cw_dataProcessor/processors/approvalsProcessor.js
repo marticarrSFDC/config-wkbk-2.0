@@ -1,7 +1,7 @@
 import { BaseProcessor } from "./baseProcessor";
 import getApprovalProcesses from "@salesforce/apex/CW_ToolingApiService.getApprovalProcesses";
 
-class ApprovalsProcessor extends BaseProcessor {
+class ApprovalsProcessor {
 	get HEADER_1() {
 		return ['Approval Processes', '', '', ''];
 	}
@@ -11,7 +11,7 @@ class ApprovalsProcessor extends BaseProcessor {
 	}
 
 	async _populateApprovalProcessesSheet() {
-		return this._populateSheet([getApprovalProcesses()]);
+		return BaseProcessor._populateSheet([getApprovalProcesses()]);
 	}
 
 	async buildTable() {

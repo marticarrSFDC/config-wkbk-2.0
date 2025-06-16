@@ -1,7 +1,7 @@
 import { BaseProcessor } from "./baseProcessor";
 import getOrgLimits from "@salesforce/apex/CW_ToolingApiService.getOrgLimits";
 
-class LimitsProcessor extends BaseProcessor {
+class LimitsProcessor {
 	get HEADER_1() {
 		return ['Org Health', '', '', ''];
 	}
@@ -11,7 +11,7 @@ class LimitsProcessor extends BaseProcessor {
 	}
 
 	_populateOrgLimitsSheet() {
-		return this._populateSheet([getOrgLimits()]);
+		return BaseProcessor._populateSheet([getOrgLimits()]);
 	}
 
 	async buildTable() {

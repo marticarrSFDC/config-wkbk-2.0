@@ -1,5 +1,5 @@
 class BaseProcessor {
-	_populateSheet(callouts) {
+	static _populateSheet(callouts) {
 		return Promise.allSettled(callouts)
 			.then(results => {
 				let data = [];
