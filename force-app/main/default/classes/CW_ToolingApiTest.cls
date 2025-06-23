@@ -23,39 +23,6 @@ public class CW_ToolingApiTest {
     }
 
     @IsTest
-    static void retrieveSObjectsGivenSuccessfulCalloutReturnsResponseBody() {
-        // ARRANGE
-        Test.setMock(HttpCalloutMock.class, new ToolingApiMock());
-        CW_ToolingApi toolingApi = new CW_ToolingApi();
-
-        // ACT
-        Test.startTest();
-        String result = toolingApi.retrieveSObjects();
-        Test.stopTest();
-
-        // ASSERT
-        System.assertNotEquals(null, result, 'Response should not be null for a successful callout.');
-    }
-
-    @IsTest
-    static void retrieveSObjectsGivenUnsuccessfulCalloutThrowsException() {
-        // ARRANGE
-        Test.setMock(HttpCalloutMock.class, new ToolingApiMockError());
-        CW_ToolingApi toolingApi = new CW_ToolingApi();
-
-        // ACT
-        try {
-            Test.startTest();
-            toolingApi.retrieveSObjects();
-            Test.stopTest();
-            System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
-        } catch (CW_ToolingApiRest.ToolingAPIException e) {
-            // ASSERT
-            System.assertEquals('Something went wrong', e.getMessage(), 'Exception message should match the error message in the mock response.');
-        }
-    }
-
-    @IsTest
     static void retrieveOrgLimitsGivenSuccessfulCalloutReturnsResponseBody() {
         // ARRANGE
         Test.setMock(HttpCalloutMock.class, new ToolingApiMock());
@@ -80,6 +47,72 @@ public class CW_ToolingApiTest {
         try {
             Test.startTest();
             toolingApi.retrieveOrgLimits();
+            Test.stopTest();
+            System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
+        } catch (CW_ToolingApiRest.ToolingAPIException e) {
+            // ASSERT
+            System.assertEquals('Something went wrong', e.getMessage(), 'Exception message should match the error message in the mock response.');
+        }
+    }
+
+    @IsTest
+    static void retrieveApprovalProcessesGivenSuccessfulCalloutReturnsResponseBody() {
+        // ARRANGE
+        Test.setMock(HttpCalloutMock.class, new ToolingApiMock());
+        CW_ToolingApi toolingApi = new CW_ToolingApi();
+
+        // ACT
+        Test.startTest();
+        String result = toolingApi.retrieveApprovalProcesses();
+        Test.stopTest();
+
+        // ASSERT
+        System.assertNotEquals(null, result, 'Response should not be null for a successful callout.');
+    }
+
+    @IsTest
+    static void retrieveApprovalProcessesGivenUnsuccessfulCalloutThrowsException() {
+        // ARRANGE
+        Test.setMock(HttpCalloutMock.class, new ToolingApiMockError());
+        CW_ToolingApi toolingApi = new CW_ToolingApi();
+
+        // ACT
+        try {
+            Test.startTest();
+            toolingApi.retrieveApprovalProcesses();
+            Test.stopTest();
+            System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
+        } catch (CW_ToolingApiRest.ToolingAPIException e) {
+            // ASSERT
+            System.assertEquals('Something went wrong', e.getMessage(), 'Exception message should match the error message in the mock response.');
+        }
+    }
+
+    @IsTest
+    static void retrieveSObjectsGivenSuccessfulCalloutReturnsResponseBody() {
+        // ARRANGE
+        Test.setMock(HttpCalloutMock.class, new ToolingApiMock());
+        CW_ToolingApi toolingApi = new CW_ToolingApi();
+
+        // ACT
+        Test.startTest();
+        String result = toolingApi.retrieveSObjects();
+        Test.stopTest();
+
+        // ASSERT
+        System.assertNotEquals(null, result, 'Response should not be null for a successful callout.');
+    }
+
+    @IsTest
+    static void retrieveSObjectsGivenUnsuccessfulCalloutThrowsException() {
+        // ARRANGE
+        Test.setMock(HttpCalloutMock.class, new ToolingApiMockError());
+        CW_ToolingApi toolingApi = new CW_ToolingApi();
+
+        // ACT
+        try {
+            Test.startTest();
+            toolingApi.retrieveSObjects();
             Test.stopTest();
             System.assert(false, 'Exception should have been thrown for an unsuccessful callout.');
         } catch (CW_ToolingApiRest.ToolingAPIException e) {

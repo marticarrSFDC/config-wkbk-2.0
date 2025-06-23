@@ -1,11 +1,18 @@
+import { BaseProcessor } from "./baseProcessor";
 import getSObjects from "@salesforce/apex/CW_ToolingApiService.getSObjects";
 import query from "@salesforce/apex/CW_ToolingApiService.query";
 
 const ENTITY_QUERY = 'SELECT+DeploymentStatus,Description,ExternalSharingModel,InternalSharingModel,QualifiedApiName+FROM+EntityDefinition+WHERE+IsLayoutable=true';
-const HEADER_1 = ['', '', '', '', '', 'Organization-Wide Defaults', '', '', ''];
-const HEADER_2 = ['Object Label', 'API Name', 'Type', 'Key Prefix', 'In Use?', 'Internal', 'External', 'Description', 'Deployment Status'];
 
 class ObjectsProcessor {
+	get HEADER_1() {
+		return ['', '', '', '', '', 'Organization-Wide Defaults', '', '', ''];
+	}
+
+	get HEADER_2() {
+		return ['Object Label', 'API Name', 'Type', 'Key Prefix', 'In Use?', 'Internal', 'External', 'Description', 'Deployment Status'];
+	}
+
 	_formatObjectType(sobject) {
 		if(sobject.customSetting) {
 			return 'Custom Setting';
@@ -16,7 +23,7 @@ class ObjectsProcessor {
 	}
 	
 	_processSObjectData(metadata) {
-		const sobjects = JSON.parse(metadata).sobjects;
+		const sobjects = metadata.sobjects;
 	
 		let data = new Map();
 		sobjects.forEach((sobject) => {
@@ -33,7 +40,7 @@ class ObjectsProcessor {
 	}
 	
 	_processEntityData(metadata) {
-		const entities = JSON.parse(metadata).records;
+		const entities = metadata.records;
 	
 		let data = new Map();
 		entities.forEach((entity) => {
@@ -49,29 +56,18 @@ class ObjectsProcessor {
 	}
 
 	_populateAllObjectSheet() {
-		return Promise.allSettled([getSObjects(), query({query: ENTITY_QUERY})])
-			.then(results => {
-				const [sobjects, entities] = results;
-				if (sobjects.status === 'fulfilled' && entities.status === 'fulfilled') {
-					return {
-						sobjectMetadata: sobjects.value, 
-						entityMetadata: entities.value
-					};
-				}
-				
-				throw new Error('Error retrieving metadata: ' + (sobjects.reason || entities.reason));
-			});
+		return BaseProcessor._populateSheet([getSObjects(), query({query: ENTITY_QUERY})]);
 	}
 	
 	
 	async buildTable() {
-		const metadata = await this._populateAllObjectSheet();
-		const sobjects = this._processSObjectData(metadata.sobjectMetadata);
-		const entities = this._processEntityData(metadata.entityMetadata);
+		const [sobj, ent] = await this._populateAllObjectSheet();
+		const sobjects = this._processSObjectData(sobj);
+		const entities = this._processEntityData(ent);
 		const apiNames = Array.from(sobjects.keys());
 		apiNames.sort();
 	
-		let data = [HEADER_1, HEADER_2];
+		let data = [this.HEADER_1, this.HEADER_2];
 		apiNames.forEach((apiName) => {
 			const sobject = sobjects.get(apiName);
 			const entity = entities.get(apiName);

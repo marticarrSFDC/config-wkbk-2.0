@@ -1,4 +1,5 @@
 import { OrgLimitsFormatter } from './formatters/orgLimitsFormatter.js';
+import { ApprovalsFormatter } from './formatters/approvalsFormatter.js';
 import { AllObjectsFormatter } from './formatters/allObjectsFormatter.js';
 
 class SheetFormatter {
@@ -19,6 +20,8 @@ class SheetFormatter {
 		switch (type) {
 			case 'limits':
 				return new OrgLimitsFormatter();
+			case 'approvals':
+				return new ApprovalsFormatter();
 			case 'allobjects':
 				return new AllObjectsFormatter();
 			default:

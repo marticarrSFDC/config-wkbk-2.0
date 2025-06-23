@@ -1,15 +1,15 @@
 import { BaseFormatter } from './baseFormatter.js';
 
 const SHEET_CONFIG = {
-	sheetId: 333,
-	title: 'All Objects',
-	columnWidths: [250, 250, 150, 75, 75, 125, 125, 300, 125],
+	sheetId: 222,
+	title: 'Approval Processes',
+	columnWidths: [175, 250, 75, 450],
 	mergeRanges: [
-		{ startRowIndex: 0, endRowIndex: 1, startColumnIndex: 5, endColumnIndex: 7 }
+		{ startRowIndex: 0, endRowIndex: 1, startColumnIndex: 0, endColumnIndex: 4 }
 	]
 };
 
-class AllObjectsFormatter extends BaseFormatter {
+class ApprovalsFormatter extends BaseFormatter {
 	format(tableData) {
 		let body = {
 			requests: []
@@ -50,18 +50,21 @@ class AllObjectsFormatter extends BaseFormatter {
 					return this._buildHeaderCell(td);
 				})
 			}
-		}
-		else {
+		} else {
 			row = {
-				values: tr.map((td) => {
+				values: tr.map((td, index) => {
+					if(index === 2) { // order
+						return this._buildNumberCell(td);
+					}
 					return this._buildStringCell(td);
 				})
 			}
 		}
+		
 		return row;
 	}
 }
 
 export {
-	AllObjectsFormatter
+	ApprovalsFormatter
 }

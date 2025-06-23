@@ -1,32 +1,29 @@
+import { BaseProcessor } from "./baseProcessor";
 import getOrgLimits from "@salesforce/apex/CW_ToolingApiService.getOrgLimits";
 
-const HEADER_1 = ['Org Health', '', '', ''];
-const HEADER_2 = ['Limit', '% Used', 'Remaining', 'Maximum'];
-
 class LimitsProcessor {
+	get HEADER_1() {
+		return ['Org Health', '', '', ''];
+	}
+
+	get HEADER_2() {
+		return ['Limit', '% Used', 'Remaining', 'Maximum'];
+	}
+
 	_populateOrgLimitsSheet() {
-		return Promise.allSettled([getOrgLimits()])
-			.then(results => {
-				const [limits] = results;
-				if (limits.status === 'fulfilled') {
-					return JSON.parse(limits.value);
-				}
-				
-				throw new Error('Error retrieving metadata: ' + limits.reason);
-			});
+		return BaseProcessor._populateSheet([getOrgLimits()]);
 	}
 
 	async buildTable() {
-		const metadata = await this._populateOrgLimitsSheet();
-		console.log(JSON.stringify(metadata));
+		const [limits] = await this._populateOrgLimitsSheet();
 	
-		let data = [HEADER_1, HEADER_2];
-		for(const limit in metadata) {
-			if (Object.hasOwn(metadata, limit)) {
+		let data = [this.HEADER_1, this.HEADER_2];
+		for(const limit in limits) {
+			if (Object.hasOwn(limits, limit)) {
 				const name = limit;
-				const percent = metadata[limit].Max ? (metadata[limit].Max - metadata[limit].Remaining)/metadata[limit].Max : 0;
-				const remaining = metadata[limit].Remaining;
-				const max = metadata[limit].Max;
+				const percent = limits[limit].Max ? (limits[limit].Max - limits[limit].Remaining)/limits[limit].Max : 0;
+				const remaining = limits[limit].Remaining;
+				const max = limits[limit].Max;
 	
 				data.push([name, percent, remaining, max]);
 			}

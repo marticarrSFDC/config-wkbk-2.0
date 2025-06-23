@@ -1,5 +1,6 @@
 import { DataProcessor } from 'c/cw_dataProcessor';
 import { LimitsProcessor } from '.././processors/limitsProcessor.js';
+import { ApprovalsProcessor } from '.././processors/approvalsProcessor.js';
 import { ObjectsProcessor } from '.././processors/objectsProcessor.js';
 
 describe('data-processor', () => {
@@ -8,6 +9,18 @@ describe('data-processor', () => {
         // Arrange
         const type = 'limits';
         const spy = jest.spyOn(LimitsProcessor.prototype, 'buildTable').mockResolvedValue([]);
+
+        // Act
+        await DataProcessor.process(type);
+
+        // Assert
+        expect(spy).toHaveBeenCalled();
+    });
+    
+    it('processor - given approvals calls ApprovalsProcessor.buildTable', async () => {
+        // Arrange
+        const type = 'approvals';
+        const spy = jest.spyOn(ApprovalsProcessor.prototype, 'buildTable').mockResolvedValue([]);
 
         // Act
         await DataProcessor.process(type);

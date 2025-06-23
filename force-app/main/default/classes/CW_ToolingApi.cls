@@ -66,6 +66,15 @@ public with sharing class CW_ToolingApi {
     public String retrieveOrgLimits() {
         return submitRestCallAndDeserialize(CW_Constants.API_URI + '/limits');
     }
+
+    /**
+	 * @description Describes all the approval processes via the metadata api.  This is the equivalent of calling //instance/services/v62.0/process/approvals via the Tooling REST API.
+	 * @return String responseBody
+	 * @throws ToolingAPIException if an an exception was encountered.
+	 */
+	public String retrieveApprovalProcesses() {
+        return submitRestCallAndDeserialize(CW_Constants.API_URI + '/process/approvals');
+    }
 	
 	/**
      * @description Describes all the sobjects via the metadata api.  This is the equivalent of calling //instance/services/v62.0/sobjects via the Tooling REST API.
