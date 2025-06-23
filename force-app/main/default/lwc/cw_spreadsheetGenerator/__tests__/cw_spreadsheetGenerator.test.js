@@ -57,7 +57,6 @@ describe('spreadsheet-generator', () => {
         const processSpy = jest.spyOn(DataProcessor, 'process').mockResolvedValue([]);
         const generateSpreadsheetSpy = jest.spyOn(SheetFormatter, 'generateSpreadsheet').mockResolvedValue({});
         const formatSpy = jest.spyOn(SheetFormatter, 'format').mockResolvedValue([]);
-        const consoleSpy = jest.spyOn(console, 'warn');
 
         createGoogleSpreadsheet.mockResolvedValue(JSON.stringify({spreadsheetId: '1111'}));
         populateSheetCallout.mockResolvedValue(JSON.stringify({}));
